@@ -1,0 +1,5 @@
+/Users/fredrik.hammar/CiK/advent-of-code/aoc-2022/obj/Debug/net6.0/aoc-2022.csproj.AssemblyReference.cache
+/Users/fredrik.hammar/CiK/advent-of-code/aoc-2022/obj/Debug/net6.0/aoc-2022.GeneratedMSBuildEditorConfig.editorconfig
+/Users/fredrik.hammar/CiK/advent-of-code/aoc-2022/obj/Debug/net6.0/aoc-2022.AssemblyInfoInputs.cache
+/Users/fredrik.hammar/CiK/advent-of-code/aoc-2022/obj/Debug/net6.0/aoc-2022.AssemblyInfo.cs
+/Users/fredrik.hammar/CiK/advent-of-code/aoc-2022/obj/Debug/net6.0/aoc-2022.csproj.CoreCompileInputs.cache
