@@ -3,6 +3,5 @@
 *.idea/*
 *.idea/
 .DS_Store
-obj/
-obj/*
-bin/
+obj
+bin
