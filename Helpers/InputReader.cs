@@ -5,7 +5,7 @@ public class InputReader
     public string GetFileContent(string day, string fileName)
     { 
         var projectPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory())!.ToString())!.ToString());
-        var filePath = $"{projectPath}/Days/{day}/Data/{fileName}.txt";
+        var filePath = $"{projectPath}/Days/{day}/InputData/{fileName}.txt";
         var text = File.ReadAllText(filePath);
 
         return text;
@@ -33,14 +33,7 @@ public class InputReader
     
     public List<List<string>> SplitListOfStringToListListOfStringByDelimeter(List<string> input, string delimeter)
     {
-        var output = new List<List<string>>();
-        
-        foreach (var line in input)
-        {
-            output.Add(line.Split(delimeter).ToList());
-        }
-        var output2 = input.Select(x => x.Split(delimeter).ToList()).ToList();
-        return output;
+        return input.Select(x => x.Split(delimeter).ToList()).ToList();
     }
     
     public List<List<string>> SplitListOfStringToListListOfStringByRow(List<string> input)

@@ -1,3 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using aoc_2022.Days.Dec01;
 
-Console.WriteLine("Hello, World!");
+Solver solver = new Solver();
+
+solver.Solve();
