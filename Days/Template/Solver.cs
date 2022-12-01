@@ -1,3 +1,4 @@
+using System;
 using aoc_2022.Helpers;
 
 namespace aoc_2022.Days.Template;
