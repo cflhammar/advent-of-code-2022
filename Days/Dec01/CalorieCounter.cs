@@ -2,7 +2,6 @@ namespace aoc_2022.Days.Dec01;
 
 public class CalorieCounter
 {
-
     public int SummarizeCalories(List<List<string>> elfs, int numberOfElfs)
     {
         var caloriesByElf = new List<int>();

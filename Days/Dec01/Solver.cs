@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using aoc_2022.Helpers;
 
 namespace aoc_2022.Days.Dec01;
@@ -11,13 +12,14 @@ public class Solver : ISolver
     {
         var testData = ParseInput("test1");
         var inputData = ParseInput("input");
+        
         var calorieCounter = new CalorieCounter();
         
         Console.WriteLine("Part 1: Test: " + calorieCounter.SummarizeCalories(testData,1) + " (24000)");
-        Console.WriteLine("Part 1: Test: " + calorieCounter.SummarizeCalories(inputData,1));
+        Console.WriteLine("Part 1: " + calorieCounter.SummarizeCalories(inputData,1));
         
         Console.WriteLine("Part 2: Test: " + calorieCounter.SummarizeCalories(testData,3) + " (45000)");
-        Console.WriteLine("Part 2: Test: " + calorieCounter.SummarizeCalories(inputData,3));
+        Console.WriteLine("Part 2: " + calorieCounter.SummarizeCalories(inputData,3));
     }
 
     public dynamic ParseInput(string fileName)
