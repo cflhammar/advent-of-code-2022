@@ -19,16 +19,6 @@ public class RockPaperScissor
         return HandScore(me);;
     }
 
-    private int HandScore(string hand)
-    {
-        switch (hand)
-        { 
-            case "rock": return 1;
-            case "paper": return 2;
-            default: return 3;
-        }
-    }
-
     public int Predictor(List<List<string>> input)
     {
         var rounds = input.Select(round =>
@@ -63,5 +53,22 @@ public class RockPaperScissor
             return "";
 
         }).ToList()).ToList();
+    }
+    
+    private int HandScore(string hand)
+    {
+        switch (hand)
+        { 
+            case "rock": return 1;
+            case "paper": return 2;
+            default: return 3;
+        }
+    }
+
+    public enum Hand
+    {
+        Rock = 1,
+        Paper = 2,
+        Scissor = 3
     }
 }
