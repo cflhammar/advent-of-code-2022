@@ -9,7 +9,10 @@ public class Solver : ISolver
     
     public void Solve()
     {
-        throw new NotImplementedException();
+        var testInput = ParseInput("test1");
+        //var input = ParseInput("input");
+        
+        Console.WriteLine();
     }
 
     public dynamic ParseInput(string fileName)
