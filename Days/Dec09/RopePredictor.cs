@@ -59,44 +59,14 @@ public class RopePredictor
 
     public Coordinate MoveKnot(Coordinate leader, Coordinate follower)
     {
-        // 2 steps right
-        if (leader.X - follower.X > 1 && leader.Y == follower.Y) follower.X = leader.X - 1;
-        // 2 steps left
-        else if (leader.X - follower.X < -1 && leader.Y == follower.Y) follower.X = leader.X + 1;
-        // 2 steps down
-        else if (leader.Y - follower.Y > 1 && leader.X == follower.X ) follower.Y = leader.Y - 1;
-        // 2 steps up
-        else if (leader.Y - follower.Y < -1 && leader.X == follower.X) follower.Y = leader.Y + 1;
-        // 2 steps up right
-        else if (leader.X - follower.X > 0  && leader.Y - follower.Y  > 1 || 
-                 leader.X - follower.X > 1  && leader.Y - follower.Y  > 0)
+        if (leader.DistanceToOtherPoint(follower) > Math.Sqrt(2))
         {
-            follower.X++;
-            follower.Y++;
-        }
-        // 2 steps down left
-        else if (leader.X - follower.X < 0 && leader.Y - follower.Y < - 1 || 
-                 leader.X - follower.X < -1 && leader.Y - follower.Y < 0)
-        {
-            follower.X--;
-            follower.Y--;
-        }
-        // 2 steps down right 
-        else  if (leader.X - follower.X > 0 && leader.Y - follower.Y < -1 || 
-                  leader.X - follower.X > 1 && leader.Y - follower.Y < 0)
-        {
-            follower.X++;
-            follower.Y--;
-        }
-        // 2 steps up left
-        else  if (leader.X - follower.X < 0 && leader.Y - follower.Y > 1 || 
-                  leader.X - follower.X < -1 && leader.Y - follower.Y > 0)
-        {
-            follower.X--;
-            follower.Y++;
+            if (leader.X > follower.X) follower.X++;
+            if (leader.X < follower.X) follower.X--;
+            if (leader.Y > follower.Y) follower.Y++;
+            if (leader.Y < follower.Y) follower.Y--;
         }
 
         return follower;
     }
-    
 }
