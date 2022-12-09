@@ -3,9 +3,8 @@ namespace aoc_2022.Days.Dec09;
 public class RopePredictor
 {
     List<Coordinate> Knots = new();
-    private List<Coordinate> KnotsPrev;
 
-    Dictionary<string, int> visited = new Dictionary<string, int>();
+    Dictionary<string, int> visited = new ();
 
     public RopePredictor(int knots)
     {
@@ -16,7 +15,6 @@ public class RopePredictor
     {
         foreach (var moveHead in input)
         {
-            KnotsPrev = Knots;
             for (int i = 0; i < Int32.Parse(moveHead[1]); i++)
             {
                 switch (moveHead[0])
