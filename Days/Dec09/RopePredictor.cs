@@ -3,7 +3,6 @@ namespace aoc_2022.Days.Dec09;
 public class RopePredictor
 {
     List<Coordinate> Knots = new();
-
     Dictionary<string, int> visited = new ();
 
     public RopePredictor(int knots)
@@ -55,10 +54,9 @@ public class RopePredictor
             }
         }
     }
-    
 
-    public Coordinate MoveKnot(Coordinate leader, Coordinate follower)
-    {
+    private Coordinate MoveKnot(Coordinate leader, Coordinate follower)
+    {  
         if (leader.DistanceToOtherPoint(follower) > Math.Sqrt(2))
         {
             if (leader.X > follower.X) follower.X++;
