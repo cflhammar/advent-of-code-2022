@@ -28,8 +28,8 @@ public class Gpu
                 cycle++;
                 if (interestingCycles.Contains(cycle)) score += x * cycle;
                 
-                if (IsWithinSprite(cycle, x)) message += '#';
-                else message += ".";
+                if (IsWithinSprite(cycle, x)) message += '█';
+                else message += " ";
             }
 
             x += addV;
