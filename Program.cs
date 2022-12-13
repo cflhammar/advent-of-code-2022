@@ -2,4 +2,4 @@
 
 Solver solver = new Solver();
 
-solver.Solve();
+solver.Solve( );
