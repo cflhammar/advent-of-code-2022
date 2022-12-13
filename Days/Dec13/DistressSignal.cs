@@ -56,10 +56,8 @@ public class DistressSignal
             }
             
             // if sub packet values of overlapping length are equal compare by remaining values
-            if (left.SubPackets.Count < right.SubPackets.Count) return 1;
-            if (left.SubPackets.Count > right.SubPackets.Count) return -1;
-
-            return 0; // continue comparison on higher level
+            if (left.SubPackets.Count == right.SubPackets.Count) return 0; 
+            return left.SubPackets.Count < right.SubPackets.Count ? 1 : -1;
         }
 
         // subpacket has value on different level -> adjust by adding value as subpacket
