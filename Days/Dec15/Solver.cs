@@ -9,14 +9,20 @@ public class Solver : ISolver
     
     public void Solve()
     {
-        var testInput = ParseInput("input");
-        //var input = ParseInput("input");
+        var testInput = ParseInput("test1");
+        var input = ParseInput("input");
 
         var s = new Sensors(testInput);
+        Console.WriteLine(s.NumberOfNoBeaconPosAtRow(10));
+        Console.WriteLine(s.FindBeaconOnEdge(20));
+         
+        s = new Sensors(input);
+        Console.WriteLine(s.NumberOfNoBeaconPosAtRow(2000000));
+        Console.WriteLine(s.FindBeaconOnEdge(4000000));
+        
 
-       // Console.WriteLine(s.NumberOfNoBeaconPosAtRow(10));
       //  Console.WriteLine(s.NumberOfNoBeaconPosAtRow(2000000));
-        s.FindBeaconOnEdge();
+        
     }
 
     public dynamic ParseInput(string fileName)
