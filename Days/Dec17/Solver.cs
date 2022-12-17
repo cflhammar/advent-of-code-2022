@@ -36,5 +36,3 @@ public class Solver : ISolver
         return temp;
     }
 }
-
-// 1559960937503
