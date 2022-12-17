@@ -2,7 +2,7 @@ namespace aoc_2022.Days.Dec17;
 public class Tetris
 {
     private List<List<string>> _board = new List<List<string>>();
-    private readonly Dictionary<int, List<(int x, int y)>> _shapes = new();
+    private readonly List<List<(int x, int y)>> _shapes = new();
     private readonly List<char> _jetStream;
     private int _onJetNumber = -1;
     private int _currentHeight;
@@ -22,37 +22,9 @@ public class Tetris
         }
 
         _jetStream = input.ToList();
-        
-        var minus = new List<(int x, int y)>()
-        {
-            (0, 0), (1, 0), (2, 0), (3, 0)
-        };
-        var plus = new List<(int x, int y)>()
-        {
-            (0, 1), (1, 1), (1, 0), (2, 1), (1, 2)
-        };
-        var rL = new List<(int x, int y)>()
-        {
-            (0, 0), (1, 0), (2, 0), (2, 1), (2, 2)
-        };
-        var i = new List<(int x, int y)>()
-        {
-            (0, 0), (0, 1), (0, 2), (0, 3)
-        };
-        
-        var box = new List<(int x, int y)>()
-        {
-            (0, 0), (0, 1), (1, 0), (1, 1)
-        };
-        
-        _shapes.Add(0,minus);
-        _shapes.Add(1,plus);
-        _shapes.Add(2,rL);
-        _shapes.Add(3,i);
-        _shapes.Add(4,box);
+        CreateRockShapes();
     }
     
-
     public long Play(long rounds)
     {
         for (long i = 0; i < rounds; i++)
@@ -63,6 +35,9 @@ public class Tetris
             var linesRemoved = DeleteBoardSpaceBelowIfHeightIsGreaterThan(100);
             _currentHeight -= linesRemoved;
             
+            if (_cycleIsFound) continue;
+            
+            
             var currentState = new State()
             {
                 JetNumber = _onJetNumber,
@@ -71,29 +46,25 @@ public class Tetris
             };
 
             var currentStateHash = currentState.ToString();
-
-            if (_cycleIsFound) continue;
+            if (!_memory.ContainsKey(currentStateHash))
+            {
+                _memory.Add(currentStateHash, (i, _totalHeightGained));
+            }
             else
             {
-                if (!_memory.ContainsKey(currentStateHash))
-                {
-                    _memory.Add(currentStateHash, (i, _totalHeightGained));
-                }
-                else
-                {
-                    var cycleSize = i - _memory[currentStateHash].round;
-                    var heightGainedInCycle = _totalHeightGained - _memory[currentStateHash].top;
+                var cycleSize = i - _memory[currentStateHash].round;
+                var heightGainedInCycle = _totalHeightGained - _memory[currentStateHash].top;
 
-                    long remainingRounds = rounds - i;
-                    long remainingCycles = remainingRounds / cycleSize;
+                long remainingRounds = rounds - i;
+                long remainingCycles = remainingRounds / cycleSize;
 
-                    var heightAfterCycles = _totalHeightGained + remainingCycles * heightGainedInCycle;
-                    _totalHeightGained = heightAfterCycles;
+                var heightAfterCycles = _totalHeightGained + remainingCycles * heightGainedInCycle;
+                _totalHeightGained = heightAfterCycles;
 
-                    i += remainingCycles * cycleSize;
-                    _cycleIsFound = true;
-                }
+                i += remainingCycles * cycleSize;
+                _cycleIsFound = true;
             }
+            
         }
         
         return _totalHeightGained;
@@ -281,12 +252,11 @@ public class Tetris
                 else
                 {
                  temp += _board[j][i] + " ";
-                    
                 }
             }
             Console.WriteLine(temp);
         }
-        Console.WriteLine(  );
+        Console.WriteLine();
     }
     
     private void Print()
@@ -294,13 +264,44 @@ public class Tetris
         Thread.Sleep(70);
         for (int i = _board.First().Count - 1; i >= 0 ; i--)
         {
-            var temp = "    ";
+            var temp = " ";
             foreach (var t in _board)
             {
                 temp += t[i];
             }
             Console.WriteLine(temp);
         }
-        Console.WriteLine(  );
+        Console.WriteLine();
+    }
+    
+    private void CreateRockShapes()
+    {
+        var minus = new List<(int x, int y)>()
+        {
+            (0, 0), (1, 0), (2, 0), (3, 0)
+        };
+        var plus = new List<(int x, int y)>()
+        {
+            (0, 1), (1, 1), (1, 0), (2, 1), (1, 2)
+        };
+        var rL = new List<(int x, int y)>()
+        {
+            (0, 0), (1, 0), (2, 0), (2, 1), (2, 2)
+        };
+        var i = new List<(int x, int y)>()
+        {
+            (0, 0), (0, 1), (0, 2), (0, 3)
+        };
+        
+        var box = new List<(int x, int y)>()
+        {
+            (0, 0), (0, 1), (1, 0), (1, 1)
+        };
+        
+        _shapes.Add(minus);
+        _shapes.Add(plus);
+        _shapes.Add(rL);
+        _shapes.Add(i);
+        _shapes.Add(box);
     }
 }
