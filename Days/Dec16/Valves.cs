@@ -1,16 +1,20 @@
+using Microsoft.VisualBasic;
+
 namespace aoc_2022.Days.Dec16;
 
 public class Valves
 {
-    public Dictionary<string, Cave> caves = new();
-    public long max = 0;
-    public List<(List<string> path, List<int> time)> completePaths = new();
-
-    public List<string> valvesWorthVisit;
-
-
-    public Valves(List<List<string>> input)
+    private readonly Dictionary<string, Cave> _caves = new();
+    private readonly int _players;
+    private readonly int _maxTime;
+    private readonly List<string> _valvesWorthVisit;
+    private Dictionary<string, long> _paths = new();
+    
+    public Valves(List<List<string>> input, int players = 1)
     {
+        _players = players;
+        _maxTime = _players == 1 ? 30 : 26;
+
         foreach (var line in input)
         {
             var thisCave = line[0].Replace("Valve ", "").Replace(" has flow rate", "").Split("=");
@@ -34,75 +38,70 @@ public class Valves
                 Pressure = Int32.Parse(thisCave[1]),
                 ConnectedCaves = connectCaves
             };
-
             
-            caves.Add(cave.Name, cave);
+            _caves.Add(cave.Name, cave);
         }
 
-        foreach (var cave in caves)
+        foreach (var cave in _caves)
         {
-            CavesPathsBfs(cave.Value);
+            AddPossibleMovesFromCaveWithBfs(cave.Value);
         }
 
-         /*
-        foreach (var (key, cave) in caves)
-        {
-            Console.WriteLine(key);
-            Console.WriteLine(cave.Pressure);   
-            Console.WriteLine(string.Join(", ", cave.ConnectedCaves));   
-            Console.WriteLine();
-            
-        }
-        */
-        
-        valvesWorthVisit = caves.Keys.Where(name => caves[name].Pressure > 0).ToList();
-
+        _valvesWorthVisit = _caves.Keys.Where(name => _caves[name].Pressure > 0).ToList();
         MakeAllPaths();
-        GetMaxPath();
+    }
+
+    public long GetMaxFlowRate()
+    {
+        if (_players == 1) return GetMaxPath();
+        else return GetTwoMaxPaths();
     }
 
     private long GetMaxPath()
     {
-        long max = 0;
-    //    var compare = new List<string>() {"AA", "FA", "GA", "HA", "IA", "JA", "KA", "LA", "MA", "NA", "OA", "PA"};
-        
-        foreach (var (path, time) in completePaths)
-        {
-            /*
-            if ( path[1] == "FA" && path[2] == "GA" && path[3] == "HA"  && path[4] == "IA" &&   path[5] == "JA" &&   path[6] == "KA" &&   path[7] == "LA" &&   path[8] == "MA"   )
-            {
-                Console.WriteLine(string.Join("->", path));    
-                Console.WriteLine(string.Join("->", time));    
-                Console.WriteLine();
-            }                           git sta
-            */                                                              
-   
-        //    if (path.SequenceEqual(compare))    Console.Wr”iteLine("found");
+        return _paths.Max(x => x.Value);
+    }
 
-            var score = GetPathValue(path, time);
-            if (score > max)
+    private long GetTwoMaxPaths()
+    {
+        var pathsSortedByFlowRate = _paths.OrderByDescending(x => x.Value).ToList();
+        long max = 0;
+        
+        for (int i = 0; i < pathsSortedByFlowRate.Count; i++)
+        {
+            for (int j = i + 1; j < pathsSortedByFlowRate.Count; j++)
             {
-                Console.WriteLine(string.Join("-",path));
-                max = score;
+                var me = pathsSortedByFlowRate[i];
+                var myPath = me.Key.Split(";")[0].Split(":");
+                
+                var elephant = pathsSortedByFlowRate[j];
+                var ePath = elephant.Key.Split(";")[0].Split(":");
+                
+                if (myPath.Intersect(ePath).Count() > 1) continue;
+
+                var score = me.Value + elephant.Value;
+                if (score > max) max = score;
+
+                // only compare the top 1000 paths
+                if (j > 1000) break;
             }
+            if (i > 1000 ) break;
         }
         
-        Console.WriteLine();
-        Console.WriteLine(max);
         return max;
     }
 
-    private long GetPathValue(List<string> path, List<int> time)
+
+    private long GetPathFlowRate(List<string> path, List<int> time)
     {
         long sum = 0;
         for (int i = 0; i < path.Count(); i++)
         {
             var cave = path[i];
             var timeOpened = time[i];
-            var pressure = caves[cave].Pressure;
+            var pressure = _caves[cave].Pressure;
 
-            sum += (30 - timeOpened) * pressure;
-          //  Console.WriteLine(sum);
+            sum += (_maxTime - timeOpened) * pressure;
         }
 
         return sum;
@@ -111,100 +110,77 @@ public class Valves
 
     private void MakeAllPaths()
     {
-        var time = 30;
-        
         var myPath = new List<string>();
         var myPathTime = new List<int>();
-        var toVisit = valvesWorthVisit;
+        var toVisit = _valvesWorthVisit;
         var spent = 0;
 
         FollowPath("AA", myPath, myPathTime, toVisit, spent);
     }
 
+    private void AddPathHashToPossiblePaths(List<string> where, List<int> when)
+    {
+        var hash = "";
+        hash += string.Join(":", where);
+        hash += ";";
+        hash += string.Join(":", when);
+
+        var totalFlowRate = GetPathFlowRate(where, when);
+        
+        _paths.TryAdd(hash, totalFlowRate);
+    }
 
     private void FollowPath(string current,List<string> myPath, List<int> myPathTime, List<string> toVisit, int spent)
     {
         myPath.Add(current);
         myPathTime.Add(spent);
         toVisit.Remove(current);
-
-        if (spent > 30) Console.WriteLine("errpr!");
         
-        if (toVisit.Count == 0) 
-        {
-            completePaths.Add((myPath, myPathTime));
-        }
+        AddPathHashToPossiblePaths(myPath, myPathTime);
         
-        /*
-        if (myPath.Count > 8 && myPath[1] == "FA" && myPath[2] == "GA" && myPath[3] == "HA" && myPath[4] == "IA" && myPath[5] == "JA" &&     
-            myPath[6] == "KA" && myPath[7] == "LA" && myPath[8] == "MA")                                             
-        {                                                                                                                                    
-            Console.WriteLine("ajdjoa");                                                                                                     
-        }
-        */
-
         foreach (var valveToVisit in toVisit)
         {
-            /*
-            if (myPath.Count > 8 && myPath[1] == "FA" && myPath[2] == "GA" && myPath[3] == "HA" && myPath[4] == "IA" && myPath[5] == "JA" &&       
-                myPath[6] == "KA" && myPath[7] == "LA" && myPath[8] == "MA" && valveToVisit == "NA")                                                                       
-            {                                                                                                                                     
-                Console.WriteLine("ajdjoa");                                                                                                      
-            } 
-            */                                                                                                                                    
-            
             var copyMyPath = new List<string>(myPath);
             var copyMyPathTime = new List<int>(myPathTime);
             var copyToVisit = new List<string>(toVisit);
             int copySpent = spent;
 
-            var steps = caves[current].paths[valveToVisit] + 1;
+            var steps = _caves[current].paths[valveToVisit] + 1;
             int copySteps = steps;
 
-            if ((spent + copySteps <= 30))
+            if (spent + copySteps <= _maxTime)
             {
                 FollowPath(valveToVisit, copyMyPath, copyMyPathTime ,copyToVisit, copySpent + copySteps);
             }
             else
             {
-                completePaths.Add((copyMyPath, copyMyPathTime));
+                AddPathHashToPossiblePaths(myPath, myPathTime);
             }
         }
-        
     }
     
-    public void CavesPathsBfs(Cave root)
+    public void AddPossibleMovesFromCaveWithBfs(Cave root)
     {
         var qu = new Queue<Cave>();
-
         var paths = root.paths;
         
-        var explored = new HashSet<string>();
-        explored.Add(root.Name);
-        
+        var explored = new HashSet<string> {root.Name};
         qu.Enqueue(root);
 
         while (qu.Count > 0)
         {
             var current = qu.Dequeue();
 
-            foreach (var cave in caves[current.Name].ConnectedCaves)
+            foreach (var cave in _caves[current.Name].ConnectedCaves)
             {
                 if (!explored.Contains(cave))
                 {
                     explored.Add(cave);
-
-
-                    if (paths.ContainsKey(current.Name))
-                    {
-                        paths.Add(cave, paths[current.Name] + 1);
-                    }
-                    else
-                    {
-                        paths.Add(cave, 1);
-                    }
                     
-                    qu.Enqueue(caves[cave]);
+                    if (paths.ContainsKey(current.Name)) paths.Add(cave, paths[current.Name] + 1);
+                    else paths.Add(cave, 1);
+                    
+                    qu.Enqueue(_caves[cave]);
                 }
             }
         }

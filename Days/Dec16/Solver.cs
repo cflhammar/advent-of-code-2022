@@ -10,14 +10,23 @@ public class Solver : ISolver
     
     public void Solve()
     {
-        var testInput = ParseInput("input");
-       // var input = ParseInput("input");
+        var testInput = ParseInput("test1"); 
+        var input = ParseInput("input");
+       
+       var cs = new Valves(testInput);
+       Console.WriteLine("Part 1: Test: " +  cs.GetMaxFlowRate() + " -> 1651");
 
-        var cs = new Valves(testInput);
-      // var cb = new Valves(input);
-    
-        
-        Console.WriteLine();
+       cs = new Valves(input);
+       Console.WriteLine("Part 1: " + cs.GetMaxFlowRate() + " -> 1792");
+
+
+       cs = new Valves(testInput, 2);
+       Console.WriteLine("Part 2: Test: " + cs.GetMaxFlowRate() + " -> 1707");
+
+       
+       cs = new Valves(input, 2);
+       Console.WriteLine("Part 2: " + cs.GetMaxFlowRate() + "");
+
     }
 
     public dynamic ParseInput(string fileName)
