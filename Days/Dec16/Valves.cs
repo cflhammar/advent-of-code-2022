@@ -83,7 +83,7 @@ public class Valves
                 if (score > max) max = score;
 
                 // only compare the top 1000 paths
-                if (j > 1000) break;
+                if (me.Value + elephant.Value < max) break;
             }
             if (i > 1000 ) break;
         }
