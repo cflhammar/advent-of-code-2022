@@ -15,9 +15,10 @@ public class Solver : ISolver
         var input = ParseInput("input");
 
         var f = new MiningRobots(); 
-        Console.WriteLine("Part 1: Test:" + f.FindAll(testInput, 24) + "-> 33");
+        Console.WriteLine("Part 1: Test: " + f.FindAll(testInput, 24) + " -> 33");
         Console.WriteLine("Part 1: " + f.FindAll(input, 24));
         
+        Console.WriteLine("Part 2: Test: " + f.FindThree(testInput, 32) + " -> ");
         Console.WriteLine("Part 2" + f.FindThree(input, 32));
 
         Console.WriteLine();
@@ -39,12 +40,12 @@ public class Solver : ISolver
             
              robots.Add((
              
-                 Int32.Parse(r.Groups[1].Value),
-                 Int32.Parse(r.Groups[2].Value),
-                (Int32.Parse(r.Groups[3].Value),
-                 Int32.Parse(r.Groups[4].Value)),
-                 (Int32.Parse(r.Groups[5].Value),
-                 Int32.Parse(r.Groups[6].Value))
+                 int.Parse(r.Groups[1].Value),
+                 int.Parse(r.Groups[2].Value),
+                (int.Parse(r.Groups[3].Value),
+                 int.Parse(r.Groups[4].Value)),
+                 (int.Parse(r.Groups[5].Value),
+                 int.Parse(r.Groups[6].Value))
          ));
         }
         

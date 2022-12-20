@@ -72,7 +72,7 @@ public class MiningRobots
             if (memory.Contains(hash)) continue;
             else memory.Add(hash);
             
-            //or build genode robot
+            // always build genode robot
             if (currentState.Ore >= robotCost.genode.ore && currentState.Obsidian >= robotCost.genode.obsidian && currentState.Time <= maxTime -1)
             {
                 var next = new State()
@@ -89,10 +89,9 @@ public class MiningRobots
                 };
                 qu.Enqueue(next);
             }
-            
-            
+            else
             {
-                //or build obsidian robot
+                //else build obsidian robot
                 if (currentState.Ore >= robotCost.obsidian.ore && currentState.Clay >= robotCost.obsidian.clay && currentState.Time <= maxTime -1)
                 {
                     var next = new State()
