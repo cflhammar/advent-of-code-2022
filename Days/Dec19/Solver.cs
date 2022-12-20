@@ -11,12 +11,15 @@ public class Solver : ISolver
     
     public void Solve()
     {
-        var testInput = ParseInput("input");
-        //var input = ParseInput("input");
+        var testInput = ParseInput("test1");
+        var input = ParseInput("input");
 
-        var f = new Factory();
-        f.Find(testInput);
+        var f = new MiningRobots(); 
+        Console.WriteLine("Part 1: Test:" + f.FindAll(testInput, 24) + "-> 33");
+        Console.WriteLine("Part 1: " + f.FindAll(input, 24));
         
+        Console.WriteLine("Part 2" + f.FindThree(input, 32));
+
         Console.WriteLine();
     }
 
