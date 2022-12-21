@@ -18,7 +18,7 @@ public class Solver : ISolver
         Console.WriteLine("Part1: " + mgo.Calculate(input));
         
         Console.WriteLine("Part2: Test: " + mgo.SearchForHumn(testInput) + " -> 301");
-        //Console.WriteLine("Part2: " + mgo.SearchForHumn(input));
+        Console.WriteLine("Part2: " + mgo.SearchForHumn(input));
         
         Console.WriteLine();
     }

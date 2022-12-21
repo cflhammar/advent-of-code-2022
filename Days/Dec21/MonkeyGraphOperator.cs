@@ -51,9 +51,11 @@ public class MonkeyGraphOperator
             long left = GetGraphValue(graph["root"].Left);
             long right = GetGraphValue(graph["root"].Right);
             
+            /*
             Console.WriteLine("humn:" + humn + " ->  l: " +  left + " - r: " + right + " = " + (left - right) );
             Console.WriteLine("below: " + below + ", above: " +  above + ", step: " + step);
             Console.WriteLine((below - above) + ": " + (below - above)/10 );
+            */
             
             if (left == right)
             {
@@ -73,8 +75,7 @@ public class MonkeyGraphOperator
 
         return 0;
     }
-
-
+    
     private Dictionary<string, Node> CreateGraph(List<List<string>> input)
     {
         Dictionary<string, Node> graph = new();
