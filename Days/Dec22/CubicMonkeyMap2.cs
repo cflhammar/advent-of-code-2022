@@ -1,6 +1,8 @@
+using aoc_2022.Helpers;
+
 namespace aoc_2022.Days.Dec22;
 
-public class TestFoldCubicMonkeyMap
+public class CubicMonkeyMap2
 {
     private List<List<char>> _map;
     private string _instrucs;
@@ -8,34 +10,33 @@ public class TestFoldCubicMonkeyMap
     private int _direction;
     private int x;
     private int y;
-
-
-    public TestFoldCubicMonkeyMap(List<List<char>> inputmap, string instruction)
+    
+    
+    public CubicMonkeyMap2(List<List<char>> inputmap, string instruction)
     {
         _map = inputmap;
         _instrucs = instruction;
-
-        FindStart();
-        Print();
+        
+        FindStart(); 
         FollowInstructions();
 
         var n = 0;
-        if (_direction == 90) n = 3;
-        if (_direction == 180) n = 2;
-        if (_direction == 270) n = 1;
+       if (_direction == 90) n = 3;
+       if (_direction == 180) n = 2;
+       if (_direction == 270) n = 1;
+       
 
-        Console.WriteLine((y + 1) * 1000 + (x + 1) * 4 + n);
+       Console.WriteLine((y+1)*1000 + (x+1) *4 + n );
     }
 
     public void FollowInstructions()
     {
         while (_instrucsCounter < _instrucs.Length)
         {
-            var direction = GetNextInstruction();
-            Move(direction);
-            Console.WriteLine(direction);
-  
-
+              var direction = GetNextInstruction();
+              Console.WriteLine(direction);
+              Move(direction);
+            
         }
     }
 
@@ -46,7 +47,6 @@ public class TestFoldCubicMonkeyMap
             for (int i = 0; i < direction; i++)
             {
                 MoveForward();
-               Print();
               //  Console.WriteLine(_direction + ", x: " + x + ", y: " + y);
             }
         }
@@ -66,9 +66,9 @@ public class TestFoldCubicMonkeyMap
 
     private void MoveForward()
     {
-        var thirdY = _map.Count / 3;
-        var fourthX = _map.First().Count / 4;
-
+        var fourthY = _map.Count / 4;
+        var thirdX = _map.First().Count / 3;
+        
         switch (_direction)
         {
             // moving right
@@ -83,40 +83,54 @@ public class TestFoldCubicMonkeyMap
                 }
                 else
                 {
-                    // from 1 to 6
-                    if (y < thirdY)
+                    // 2 to 4
+                    if (y < fourthY)
                     {
-                        var newY = _map.Count() - y - 1;
-                        var newX = _map.First().Count - 1;
+                        var newY = fourthY * 2 + (fourthY - 1 - x) ;
+                        var newX = thirdX * 2 - 1;
                         if (_map[newY][newX] == '#') return;
-
-                        RotateLeft();
-                        RotateLeft();
-
-                        x = newX;
-                        y = newY;
-                    }
-                    // from 4 to 6
-                    else if (y >= thirdY && y < thirdY * 2)
-                    {
-                        var newY = thirdY * 2;
-                        var newX = 2 * thirdY - 1 - y + 3 * fourthX ;
-                        if (_map[newY][newX] == '#') return;
-
+                    
+                        RotateRight();
                         RotateRight();
 
                         x = newX;
                         y = newY;
+                        
                     }
-                    else
-                        // from 6 to 1
+                    // 3 to 2
+                    if ( y >= fourthY && y < fourthY * 2)
                     {
-                        var newY = (_map.Count - y);
-
-                        var newX = 3 * fourthX - 1;
+                        var newY = fourthY - 1;
+                        var newX = thirdX + y;
                         if (_map[newY][newX] == '#') return;
-
+                    
                         RotateLeft();
+
+                        x = newX;
+                        y = newY;
+                        
+                    }
+                    // 4 to 2
+                    if ( y >= fourthY * 2 && y < fourthY * 3)
+                    {
+                        var newY = fourthY * 3 - 1 - y;
+                        var newX = thirdX * 3 - 1;
+                        if (_map[newY][newX] == '#') return;
+                    
+                        RotateLeft();
+                        RotateLeft();
+
+                        x = newX;
+                        y = newY;
+                        
+                    }
+                    // 6 to 4
+                    if (y >= fourthY * 3)
+                    {
+                        var newY = fourthY * 3 - 1;
+                        var newX = thirdX + y - 3 * fourthY;
+                        if (_map[newY][newX] == '#') return;
+                    
                         RotateLeft();
 
                         x = newX;
@@ -125,56 +139,67 @@ public class TestFoldCubicMonkeyMap
                 }
 
                 break;
-
+            
             // moving left
             case 180:
-                if (x - 1 >= 0 && _map[y][x - 1] == '.')
+                if (x -1 >= 0 && _map[y][x - 1] == '.')
                 {
                     x--;
                 }
-                else if (x - 1 >= 0 && _map[y][x - 1] == '#')
+                else if (x -1 >= 0 && _map[y][x - 1] == '#')
                 {
                     break;
                 }
                 else
                 {
-
-                    // from 1 to 3
-                    if (y < thirdY)
+                    // 1 to 5
+                    if (y < fourthY)
                     {
-                        var newY = thirdY;
-                        var newX = fourthX + y;
-
+                        var newY= fourthY - y + 2 * fourthY;
+                        var newX = 0;
                         if (_map[newY][newX] == '#') return;
-
-                        RotateLeft();
-
-                        x = newX;
-                        y = newY;
-                    }
-                    // from 2 to 6
-                    else if (y >= thirdY && y < thirdY * 2)
-                    {
-                        var newY = _map.Count - 1;
-                        var newX = 3 * fourthX + (2 * thirdY - 1 - y);
-
-                        if (_map[newY][newX] == '#') return;
-
-                        RotateLeft();
+                    
                         RotateLeft();
                         RotateLeft();
 
                         x = newX;
                         y = newY;
+                        
                     }
-                    // from 5 to 3
-                    else
+                    // 3 to 5
+                    if ( y >= fourthY && y < fourthY * 2)
                     {
-                        var newY = thirdY * 2 - 1;
-                        var newX = fourthX + (3 * thirdY - y);
-
+                        var newY= fourthY * 2;
+                        var newX = y - fourthY;
                         if (_map[newY][newX] == '#') return;
+                    
+                        RotateLeft();
 
+                        x = newX;
+                        y = newY;
+                    }
+                    // 5 to 1
+                    if ( y >= fourthY * 2 && y < fourthY * 3)
+                    {
+                        var newY = fourthY * 3 - 1 - y ;
+                        var newX = thirdX;
+                        if (_map[newY][newX] == '#') return;
+                    
+                        RotateRight();
+                        RotateRight();
+
+                        x = newX;
+                        y = newY;
+                    }
+                    // 6 to 1
+                    if (y >= fourthY * 3)
+                    {
+                        var newY = 0;
+                        var newX = thirdX + y - fourthY * 3 ;
+                        if (_map[newY][newX] == '#') return;
+                    
+                        RotateRight();
+                        RotateRight();
                         RotateRight();
 
                         x = newX;
@@ -183,153 +208,118 @@ public class TestFoldCubicMonkeyMap
                 }
 
                 break;
-
+            
             // moving Up
             case 90:
-
-                if (y - 1 >= 0 && _map[y - 1][x] == '.')
+                
+                if (y- 1 >= 0 && _map[y-1][x] == '.')
                 {
                     y--;
                 }
-                else if (y - 1 >= 0 && _map[y - 1][x] == '#')
+                else if ( y- 1 >= 0 && _map[y-1][x] == '#')
                 {
                     break;
                 }
                 else
                 {
-                    // 1 to 2
-                    if (y < thirdY)
+                    // 5 to 3
+                    if (x < thirdX)
                     {
-                        var newY = thirdY;
-                        var newX = 3 * fourthX - 1 - x;
-
+                        var newY = x + fourthY;
+                        var newX = thirdX ;
                         if (_map[newY][newX] == '#') return;
+                    
+                        RotateRight();
 
+                        x = newX;
+                        y = newY;
+                    }
+                    // 1 to 6
+                    if ( x >= thirdX && x < thirdX * 2 )
+                    {
+                        var newY = fourthY * 3 + (x - thirdX);
+                        var newX = 0;
+                        if (_map[newY][newX] == '#') return;
+                    
                         RotateLeft();
                         RotateLeft();
+                        RotateLeft();
 
                         x = newX;
                         y = newY;
                     }
-
-                    // from 2 to 1
-                    if (x < fourthX && y >= thirdY && y < thirdY * 2)
+                    // 2 to 6
+                    if ( x >= thirdX * 2)
                     {
-                        var newY = 0;
-                        var newX = 3 * fourthX + (fourthX - x - 1);
-
+                        var newY = fourthY * 4 -1;
+                        var newX = x - thirdX * 2;
                         if (_map[newY][newX] == '#') return;
-
+                        
+                        RotateRight(); 
                         RotateRight();
                         RotateRight();
-
+                        RotateRight();
+                        
                         x = newX;
                         y = newY;
                     }
-
-                    // 3 to 1
-                    if (x >= fourthX && x < fourthX * 2 && y >= thirdY && y < thirdY * 2)
-                    {
-                        var newY = x - fourthX;
-                        var newX = 2 * fourthX;
-
-                        if (_map[newY][newX] == '#') return;
-
-                        RotateRight();
-
-                        x = newX;
-                        y = newY;
-                    }
-
-                    // 6 to 4
-                    if (x >= 3 * fourthX && y >= thirdY * 3)
-                    {
-                        var newY = thirdY * 2 + (fourthX * 4 - 1 - x);
-                        var newX = 3 * fourthX - 1;
-
-                        if (_map[newY][newX] == '#') return;
-
-                        RotateRight();
-
-                        x = newX;
-                        y = newY;
-                    }
-
+                
                 }
-
                 break;
             // moving down
             case 270:
-                if (y + 1 < _map.Count && _map[y + 1][x] == '.')
+                if (y + 1 < _map.Count && _map[y+1][x] == '.')
                 {
                     y++;
                 }
-                else if (y + 1 < _map.Count && _map[y + 1][x] == '#')
+                else if (y + 1 < _map.Count && _map[y+1][x] == '#')
                 {
                     break;
                 }
                 else
                 {
-                    // 2 to 5 
-                    if (x < fourthX && y >= thirdY && y < thirdY * 2)
+                    // 6 to 2 
+                    if (x < thirdX)
                     {
-                        var newY = 3 * thirdY - 1;
-                        var newX = 2 * fourthX + (fourthX - 1 - x);
-
+                        var newY = 0;
+                        var newX = thirdX * 2 + x;
                         if (_map[newY][newX] == '#') return;
-
+                        
+                        RotateLeft(); 
                         RotateLeft();
                         RotateLeft();
-
+                        RotateLeft();
+                        
                         x = newX;
                         y = newY;
                     }
-
-                    // 5 to 2
-                    if (x >= fourthX * 2 && x < fourthX * 3 && y >= thirdY * 2)
+                    // 4 to 6
+                    if ( x >= thirdX && x < thirdX * 2 )
                     {
-                        var newY = 2 * thirdY - 1;
-                        var newX = 3 * fourthX - 1 - x;
-
+                        var newY = x - thirdX + fourthY * 3;
+                        var newX = thirdX - 1;
                         if (_map[newY][newX] == '#') return;
-
+                        
                         RotateRight();
+                        
+                        x = newX;
+                        y = newY;
+                        
+                    }
+                    // 2 to 3
+                    if ( x >= thirdX * 2)
+                    {
+                        var newY = x - thirdX;
+                        var newX = thirdX * 2 - 1;
+                        if (_map[newY][newX] == '#') return;
+                        
                         RotateRight();
-
+                        
                         x = newX;
                         y = newY;
                     }
-
-                    // 3 to 5
-                    if (x >= fourthX && x < fourthX * 3 && y >= thirdY && y < thirdY * 2)
-                    {
-                        var newY = 2 * thirdY + (2 * fourthX - 1 - x);
-                        var newX = 2 * fourthX;
-
-                        if (_map[newY][newX] == '#') return;
-
-                        RotateLeft();
-
-                        x = newX;
-                        y = newY;
-                    }
-
-                    // 6 to 2
-                    if (x >= fourthX * 3 && y >= thirdY * 2)
-                    {
-                        var newY = thirdY + fourthX * 4 - 1 - x;
-                        var newX = 0;
-
-                        if (_map[newY][newX] == '#') return;
-
-                        RotateLeft();
-
-                        x = newX;
-                        y = newY;
-                    }
-
+                    
                 }
-
                 break;
         }
     }
@@ -344,7 +334,8 @@ public class TestFoldCubicMonkeyMap
         _direction -= 90;
         if (_direction < 0) _direction = 360 + _direction;
     }
-
+    
+    
 
     void FindStart()
     {
@@ -356,22 +347,6 @@ public class TestFoldCubicMonkeyMap
                 break;
             }
         }
-    }
-
-    void Print()
-    {
-        for (int i = 0; i < _map.Count; i++)
-        { 
-            var temp = ""; 
-            for (int j = 0; j < _map.First().Count; j++)
-            {
-                if (i == y && j == x) temp += "x";
-               else  temp += _map[i][j];
-            }
-
-            Console.WriteLine(temp);
-        }
-        Console.WriteLine();
     }
     
     
@@ -399,4 +374,39 @@ public class TestFoldCubicMonkeyMap
 
         return 0;
     }
+
+
+    void Print()
+    {
+        foreach (var row in _map)
+        {
+            var temp = string.Join("", row);
+            Console.WriteLine(temp);
+        }
+        
+        Console.WriteLine();
+    }
 }
+
+// 100005
+// 101781
+// 85061
+// 15550
+// 15546
+
+// 15266
+
+// 81306
+// not guessed: 81482
+
+// 140160
+// not guessed 140244
+// not guessed 140360
+
+// 145406
+// 155080
+
+
+// 73242
+
+// 35294

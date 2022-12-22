@@ -9,10 +9,10 @@ public class Solver : ISolver
     
     public void Solve()
     {
-        var testInput = ParseInput("input");
+        var testInput = ParseInput("test1");
         //var input = ParseInput("input");
 
-        var mm = new CubicMonkeyMap(testInput.Item1, testInput.Item2);
+        var mm = new TestFoldCubicMonkeyMap(testInput.Item1, testInput.Item2);
 
         Console.WriteLine();
     }
@@ -24,7 +24,7 @@ public class Solver : ISolver
         var t = reader.SplitByEmptyRow(temp);
         var t2 = reader.SplitByRow(t[0]);
 
-        var t22 = t2.Select(s => s.Replace(" ", "o")).ToList();
+        var t22 = t2.Select(s => s.Replace(" ", " ")).ToList();
         var max = t2.Select(x => x.Length).Max();
         
         for (int row = 0; row < t22.Count(); row++)
@@ -32,7 +32,7 @@ public class Solver : ISolver
             var rowMax = t22[row].Length;
             for (int i = 0; i < max - rowMax; i++)
             {
-                t22[row] += "o";
+                t22[row] += " ";
             }
         }
         

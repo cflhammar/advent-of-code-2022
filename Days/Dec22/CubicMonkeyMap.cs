@@ -13,14 +13,20 @@ public class CubicMonkeyMap
     
     
     public CubicMonkeyMap(List<List<char>> inputmap, string instruction)
-    { 
-        var helper = new MatrixOperations();
-        _map = helper.Rotate90(inputmap);
-        _map = helper.Rotate90(_map);
-        _map = helper.Rotate90(_map);
+    {
+        _map = inputmap;
         
+    //    Print();
+        
+        var helper = new MatrixOperations();
+        _map = helper.Rotate90(_map);
+        _map = helper.Rotate90(_map);
+        _map = helper.Rotate90(_map);
         
         _instrucs = instruction;
+        
+      //  Print();
+       // System.Environment.Exit(1);
         
        //FindStart();
        x = 0;
@@ -28,12 +34,49 @@ public class CubicMonkeyMap
        _direction = 90;
        FollowInstructions();
 
+       _map[y][x] = 'e';
+       
+       Print();
+
+       _map = helper.Rotate90(_map);
+       
+       Print();
+
+       var finx = 0;
+       var findy = 0;
+       for (int yy = 0; yy < _map.Count; yy++)
+       {
+           for (int xx = 0; xx  < _map.First().Count; xx++)
+           {
+               if (_map[yy][xx] == 'e')
+               {
+                   findy = yy;
+                   finx = xx;
+               }
+           }
+       }
+       
+     
+       
+       
+       // transform back
+       _direction -= 90;
+
+       var transY = x;
+       var transX = (_map.Count - 1) - y;
+       
+       Console.WriteLine(x + "." + y);
+       Console.WriteLine(transX + "." + transY);
+       Console.WriteLine(finx + "." + findy);
+       
        var n = 0;
        if (_direction == 90) n = 3;
        if (_direction == 180) n = 2;
        if (_direction == 270) n = 1;
        
-       Console.WriteLine((y+1)*1000 + (x+1) *4 + n );
+       Console.WriteLine((findy+1)*1000 + (finx+1) * 4 + n );
+
+       Console.WriteLine((transY+1)*1000 + (transX+1) *4 + n );
     }
 
     public void FollowInstructions()
@@ -117,7 +160,7 @@ public class CubicMonkeyMap
                     else
                         // from 6 to 2
                     {
-                        var newY = y - thirdY * 3 ;
+                        var newY = y - thirdY * 2;
                         var newX = 0;
                         
                         if (_map[newY][newX] == 'o') return;
@@ -140,7 +183,6 @@ public class CubicMonkeyMap
                 }
                 else
                 {
-                
                     // from 2 to 6
                     if (y < thirdY && x < fourthX)
                     {
@@ -157,7 +199,7 @@ public class CubicMonkeyMap
                     // from 1 to 6  (old 2 to 6 not changed)
                     else if (y >= thirdY && y < thirdY * 2 && x < fourthX)
                     {
-                        var newY = _map.Count - 1;
+                        var newY = thirdY * 3 - 1;
                         var newX = 3 * fourthX + (2 * thirdY - 1 - y);
                     
                         if (_map[newY][newX] == 'o') return;
@@ -173,7 +215,7 @@ public class CubicMonkeyMap
                     else
                     {
                         var newY = thirdY * 2 - 1;
-                        var newX = fourthX + (3 * thirdY - y);
+                        var newX = fourthX + (3 * thirdY - y - 1);
                     
                         if (_map[newY][newX] == 'o') return;
                     
@@ -206,9 +248,9 @@ public class CubicMonkeyMap
                     
                         if (_map[newY][newX] == 'o') return;
                     
-                        RotateLeft();
-                        RotateLeft();
-                    
+                        RotateRight();
+                        RotateRight();
+
                         x = newX;
                         y = newY;
                     }
@@ -221,8 +263,8 @@ public class CubicMonkeyMap
                     
                         if (_map[newY][newX] == 'o') return;
                     
-                        RotateRight();
-                        RotateRight();
+                        RotateLeft();
+                        RotateLeft();
                     
                         x = newX;
                         y = newY;
@@ -236,21 +278,21 @@ public class CubicMonkeyMap
                     
                         if (_map[newY][newX] == 'o') return;
                     
-                        RotateRight();
+                        RotateLeft();
                     
                         x = newX;
                         y = newY;
                     }
                     
                     // 6 to 4
-                    if (x >= 3 * fourthX && y >= thirdY * 3 )
+                    if (x >= 3 * fourthX && y >= thirdY * 2 )
                     {
                         var newY = thirdY * 2 + (fourthX * 4 - 1 - x); 
                         var newX = 3 * fourthX - 1;
                     
                         if (_map[newY][newX] == 'o') return;
                     
-                        RotateRight();
+                        RotateLeft();
                     
                         x = newX;
                         y = newY;
@@ -270,7 +312,7 @@ public class CubicMonkeyMap
                 }
                 else
                 {
-                    // 2 to 5 
+                    //  1 to 5 (old  2 to 5) 
                     if (x < fourthX  && y >= thirdY  && y < thirdY * 2)
                     {
                         var newY = 3 * thirdY -1; 
@@ -285,10 +327,10 @@ public class CubicMonkeyMap
                         y = newY;
                     }
                     
-                    // 5 to 2
+                    //  5 to 1  (old 5 to 2)
                     if (x >= fourthX * 2 && x < fourthX * 3  && y >= thirdY * 2 )
                     {
-                        var newY = 2 * thirdY -1; 
+                        var newY = 2 * thirdY - 1; 
                         var newX = 3 * fourthX - 1 - x ;
                     
                         if (_map[newY][newX] == 'o') return;
@@ -314,7 +356,7 @@ public class CubicMonkeyMap
                         y = newY;
                     }
                     
-                    // 6 to 2
+                    //  6 to 1 (old 6 to 2)
                     if (x >= fourthX * 3 && y >= thirdY * 2)
                     {
                         var newY = thirdY + fourthX * 4 - 1 - x; 
@@ -384,6 +426,31 @@ public class CubicMonkeyMap
 
         return 0;
     }
+
+
+    void Print()
+    {
+        foreach (var row in _map)
+        {
+            var temp = string.Join("", row);
+            Console.WriteLine(temp);
+        }
+        
+        Console.WriteLine();
+    }
 }
 
 // 100005
+// 101781
+// 85061
+// 15550
+// 15546
+
+// 15266
+
+// 81306
+// not guessed: 81482
+
+// 140160
+// not guessed 140244
+// not guessed 140360
