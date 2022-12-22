@@ -8,4 +8,4 @@ obj/
 bin
 bin/
 Days/Dec12Year21/
-**/InputData/
+**/InputData/*.txt

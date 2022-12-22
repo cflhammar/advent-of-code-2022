@@ -16,27 +16,24 @@ public class TestFoldCubicMonkeyMap
         _instrucs = instruction;
 
         FindStart();
-        Print();
-        FollowInstructions();
-
-        var n = 0;
-        if (_direction == 90) n = 3;
-        if (_direction == 180) n = 2;
-        if (_direction == 270) n = 1;
-
-        Console.WriteLine((y + 1) * 1000 + (x + 1) * 4 + n);
+    //    Print();
     }
 
-    public void FollowInstructions()
+    public int FollowInstructions()
     {
         while (_instrucsCounter < _instrucs.Length)
         {
             var direction = GetNextInstruction();
             Move(direction);
-            Console.WriteLine(direction);
-  
-
+            //Console.WriteLine(direction);
         }
+        
+        var n = 0;
+        if (_direction == 90) n = 3;
+        if (_direction == 180) n = 2;
+        if (_direction == 270) n = 1;
+
+        return ((y + 1) * 1000 + (x + 1) * 4 + n);
     }
 
     private void Move(dynamic direction)
@@ -46,7 +43,7 @@ public class TestFoldCubicMonkeyMap
             for (int i = 0; i < direction; i++)
             {
                 MoveForward();
-               Print();
+             //  Print();
               //  Console.WriteLine(_direction + ", x: " + x + ", y: " + y);
             }
         }
@@ -95,6 +92,7 @@ public class TestFoldCubicMonkeyMap
 
                         x = newX;
                         y = newY;
+                        return;
                     }
                     // from 4 to 6
                     else if (y >= thirdY && y < thirdY * 2)
@@ -210,6 +208,7 @@ public class TestFoldCubicMonkeyMap
 
                         x = newX;
                         y = newY;
+                        return;
                     }
 
                     // from 2 to 1
@@ -225,6 +224,7 @@ public class TestFoldCubicMonkeyMap
 
                         x = newX;
                         y = newY;
+                        return;
                     }
 
                     // 3 to 1
@@ -239,6 +239,7 @@ public class TestFoldCubicMonkeyMap
 
                         x = newX;
                         y = newY;
+                        return;
                     }
 
                     // 6 to 4
@@ -253,6 +254,7 @@ public class TestFoldCubicMonkeyMap
 
                         x = newX;
                         y = newY;
+                        return;
                     }
 
                 }
@@ -283,6 +285,7 @@ public class TestFoldCubicMonkeyMap
 
                         x = newX;
                         y = newY;
+                        return;
                     }
 
                     // 5 to 2
@@ -298,6 +301,7 @@ public class TestFoldCubicMonkeyMap
 
                         x = newX;
                         y = newY;
+                        return;
                     }
 
                     // 3 to 5
@@ -312,6 +316,7 @@ public class TestFoldCubicMonkeyMap
 
                         x = newX;
                         y = newY;
+                        return;
                     }
 
                     // 6 to 2
@@ -326,6 +331,7 @@ public class TestFoldCubicMonkeyMap
 
                         x = newX;
                         y = newY;
+                        return;
                     }
 
                 }

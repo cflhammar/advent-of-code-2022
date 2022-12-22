@@ -16,24 +16,22 @@ public class MonkeyMap
        _instrucs = instruction;
        
        FindStart();
-       FollowInstructions();
-
-       var n = 0;
-       if (_direction == 90) n = 3;
-       if (_direction == 180) n = 2;
-       if (_direction == 270) n = 1;
-       
-       Console.WriteLine((y+1)*1000 + (x+1) *4 + n );
     }
 
-    public void FollowInstructions()
+    public int FollowInstructions()
     {
         while (_instrucsCounter < _instrucs.Length)
         {
               var direction = GetNextInstruction();
               Move(direction);
-              
         }
+        
+        var n = 0;
+        if (_direction == 90) n = 3;
+        if (_direction == 180) n = 2;
+        if (_direction == 270) n = 1;
+       
+        return ((y+1)*1000 + (x+1) *4 + n );
     }
 
     private void Move(dynamic direction)

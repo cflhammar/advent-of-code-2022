@@ -9,12 +9,22 @@ public class Solver : ISolver
     
     public void Solve()
     {
-        var testInput = ParseInput("test1");
-        //var input = ParseInput("input");
+        var testInput = ParseInput("test2");
+        var input = ParseInput("input");
 
-        var mm = new TestFoldCubicMonkeyMap(testInput.Item1, testInput.Item2);
+        var mm = new MonkeyMap(testInput.Item1, testInput.Item2);
+        Console.WriteLine(mm.FollowInstructions() + " -> 6032");
+        
+        mm = new MonkeyMap(input.Item1, input.Item2);
+        Console.WriteLine(mm.FollowInstructions());
+        
 
-        Console.WriteLine();
+        var tcmm = new TestFoldCubicMonkeyMap(testInput.Item1, testInput.Item2);
+        Console.WriteLine( tcmm.FollowInstructions() + " -> 5031");
+        
+        var cmm = new CubicMonkeyMap2(input.Item1, input.Item2);
+        Console.WriteLine( cmm.FollowInstructions());
+
     }
 
     public dynamic ParseInput(string fileName)
@@ -38,9 +48,6 @@ public class Solver : ISolver
         
         var t3 = reader.SplitListOfStringToListListOfCharByNoDelimeter(t22);
 
-        
-
-        
         return (t3, t[1]);
     }
 }

@@ -1,53 +1,47 @@
-using aoc_2022.Helpers;
-
 namespace aoc_2022.Days.Dec22;
 
 public class CubicMonkeyMap2
 {
-    private List<List<char>> _map;
-    private string _instrucs;
-    private int _instrucsCounter = 0;
+    private readonly List<List<char>> _map;
+    private readonly string _instructions;
+    private int _instructionCounter;
     private int _direction;
-    private int x;
-    private int y;
+    private int _x;
+    private int _y;
     
     
-    public CubicMonkeyMap2(List<List<char>> inputmap, string instruction)
+    public CubicMonkeyMap2(List<List<char>> inputMap, string instruction)
     {
-        _map = inputmap;
-        _instrucs = instruction;
+        _map = inputMap;
+        _instructions = instruction;
         
-        FindStart(); 
-        FollowInstructions();
-
-        var n = 0;
-       if (_direction == 90) n = 3;
-       if (_direction == 180) n = 2;
-       if (_direction == 270) n = 1;
-       
-
-       Console.WriteLine((y+1)*1000 + (x+1) *4 + n );
+        FindStart();
     }
 
-    public void FollowInstructions()
+    public int FollowInstructions()
     {
-        while (_instrucsCounter < _instrucs.Length)
+        while (_instructionCounter < _instructions.Length)
         {
               var direction = GetNextInstruction();
-              Console.WriteLine(direction);
               Move(direction);
-            
         }
+        
+        var n = 0;
+        if (_direction == 90) n = 3;
+        if (_direction == 180) n = 2;
+        if (_direction == 270) n = 1;
+
+        return ((_y + 1) * 1000 + (_x + 1) * 4 + n);
     }
 
     private void Move(dynamic direction)
     {
+    
         if (direction is int)
         {
             for (int i = 0; i < direction; i++)
             {
                 MoveForward();
-              //  Console.WriteLine(_direction + ", x: " + x + ", y: " + y);
             }
         }
         else
@@ -73,137 +67,137 @@ public class CubicMonkeyMap2
         {
             // moving right
             case 0:
-                if (x + 1 < _map.First().Count && _map[y][x + 1] == '.')
+                if (_x + 1 < _map.First().Count && _map[_y][_x + 1] == '.')
                 {
-                    x++;
+                    _x++;
                 }
-                else if (x + 1 < _map.First().Count && _map[y][x + 1] == '#')
+                else if (_x + 1 < _map.First().Count && _map[_y][_x + 1] == '#')
                 {
                     break;
                 }
                 else
                 {
+
                     // 2 to 4
-                    if (y < fourthY)
+                    if (_y < fourthY)
                     {
-                        var newY = fourthY * 2 + (fourthY - 1 - x) ;
+                        var newY = fourthY - _y - 1+ 2 * fourthY;
                         var newX = thirdX * 2 - 1;
                         if (_map[newY][newX] == '#') return;
                     
                         RotateRight();
                         RotateRight();
 
-                        x = newX;
-                        y = newY;
-                        
+                        _x = newX;
+                        _y = newY;
                     }
                     // 3 to 2
-                    if ( y >= fourthY && y < fourthY * 2)
+                    else if ( _y >= fourthY && _y < fourthY * 2)
                     {
                         var newY = fourthY - 1;
-                        var newX = thirdX + y;
+                        var newX = thirdX + _y;
                         if (_map[newY][newX] == '#') return;
                     
                         RotateLeft();
 
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                         
                     }
                     // 4 to 2
-                    if ( y >= fourthY * 2 && y < fourthY * 3)
+                    else if ( _y >= fourthY * 2 && _y < fourthY * 3)
                     {
-                        var newY = fourthY * 3 - 1 - y;
+                        var newY = fourthY * 3 - 1 - _y;
                         var newX = thirdX * 3 - 1;
                         if (_map[newY][newX] == '#') return;
                     
                         RotateLeft();
                         RotateLeft();
 
-                        x = newX;
-                        y = newY;
-                        
+                        _x = newX;
+                        _y = newY;
                     }
                     // 6 to 4
-                    if (y >= fourthY * 3)
+                    else if (_y >= fourthY * 3)
                     {
                         var newY = fourthY * 3 - 1;
-                        var newX = thirdX + y - 3 * fourthY;
+                        var newX = thirdX + _y - 3 * fourthY;
                         if (_map[newY][newX] == '#') return;
                     
                         RotateLeft();
 
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                     }
+
                 }
 
                 break;
             
             // moving left
             case 180:
-                if (x -1 >= 0 && _map[y][x - 1] == '.')
+                if (_x -1 >= 0 && _map[_y][_x - 1] == '.')
                 {
-                    x--;
+                    _x--;
                 }
-                else if (x -1 >= 0 && _map[y][x - 1] == '#')
+                else if (_x -1 >= 0 && _map[_y][_x - 1] == '#')
                 {
                     break;
                 }
                 else
                 {
+
                     // 1 to 5
-                    if (y < fourthY)
+                    if (_y < fourthY)
                     {
-                        var newY= fourthY - y + 2 * fourthY;
+                        var newY= fourthY - 1 - _y + 2 * fourthY;
                         var newX = 0;
                         if (_map[newY][newX] == '#') return;
                     
                         RotateLeft();
                         RotateLeft();
 
-                        x = newX;
-                        y = newY;
-                        
+                        _x = newX;
+                        _y = newY;
                     }
                     // 3 to 5
-                    if ( y >= fourthY && y < fourthY * 2)
+                    else if ( _y >= fourthY && _y < fourthY * 2)
                     {
                         var newY= fourthY * 2;
-                        var newX = y - fourthY;
+                        var newX = _y - fourthY;
                         if (_map[newY][newX] == '#') return;
                     
                         RotateLeft();
 
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                     }
                     // 5 to 1
-                    if ( y >= fourthY * 2 && y < fourthY * 3)
+                    else if ( _y >= fourthY * 2 && _y < fourthY * 3)
                     {
-                        var newY = fourthY * 3 - 1 - y ;
+                        var newY = fourthY * 3 - 1 - _y ;
                         var newX = thirdX;
                         if (_map[newY][newX] == '#') return;
                     
                         RotateRight();
                         RotateRight();
 
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                     }
                     // 6 to 1
-                    if (y >= fourthY * 3)
+                    else if (_y >= fourthY * 3)
                     {
                         var newY = 0;
-                        var newX = thirdX + y - fourthY * 3 ;
+                        var newX = thirdX + _y - fourthY * 3 ;
                         if (_map[newY][newX] == '#') return;
                     
                         RotateRight();
                         RotateRight();
                         RotateRight();
 
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                     }
                 }
 
@@ -212,32 +206,33 @@ public class CubicMonkeyMap2
             // moving Up
             case 90:
                 
-                if (y- 1 >= 0 && _map[y-1][x] == '.')
+                if (_y- 1 >= 0 && _map[_y-1][_x] == '.')
                 {
-                    y--;
+                    _y--;
                 }
-                else if ( y- 1 >= 0 && _map[y-1][x] == '#')
+                else if ( _y- 1 >= 0 && _map[_y-1][_x] == '#')
                 {
                     break;
                 }
                 else
                 {
+
                     // 5 to 3
-                    if (x < thirdX)
+                    if (_x < thirdX)
                     {
-                        var newY = x + fourthY;
+                        var newY = _x + fourthY;
                         var newX = thirdX ;
                         if (_map[newY][newX] == '#') return;
                     
                         RotateRight();
 
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                     }
                     // 1 to 6
-                    if ( x >= thirdX && x < thirdX * 2 )
+                    else if ( _x >= thirdX && _x < thirdX * 2 )
                     {
-                        var newY = fourthY * 3 + (x - thirdX);
+                        var newY = fourthY * 3 + (_x - thirdX);
                         var newX = 0;
                         if (_map[newY][newX] == '#') return;
                     
@@ -245,14 +240,14 @@ public class CubicMonkeyMap2
                         RotateLeft();
                         RotateLeft();
 
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                     }
                     // 2 to 6
-                    if ( x >= thirdX * 2)
+                    else if ( _x >= thirdX * 2)
                     {
                         var newY = fourthY * 4 -1;
-                        var newX = x - thirdX * 2;
+                        var newX = _x - thirdX * 2;
                         if (_map[newY][newX] == '#') return;
                         
                         RotateRight(); 
@@ -260,29 +255,30 @@ public class CubicMonkeyMap2
                         RotateRight();
                         RotateRight();
                         
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                     }
-                
                 }
                 break;
+            
             // moving down
             case 270:
-                if (y + 1 < _map.Count && _map[y+1][x] == '.')
+                if (_y + 1 < _map.Count && _map[_y+1][_x] == '.')
                 {
-                    y++;
+                    _y++;
                 }
-                else if (y + 1 < _map.Count && _map[y+1][x] == '#')
+                else if (_y + 1 < _map.Count && _map[_y+1][_x] == '#')
                 {
                     break;
                 }
                 else
                 {
+
                     // 6 to 2 
-                    if (x < thirdX)
+                    if (_x < thirdX)
                     {
                         var newY = 0;
-                        var newX = thirdX * 2 + x;
+                        var newX = thirdX * 2 + _x;
                         if (_map[newY][newX] == '#') return;
                         
                         RotateLeft(); 
@@ -290,35 +286,34 @@ public class CubicMonkeyMap2
                         RotateLeft();
                         RotateLeft();
                         
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                     }
                     // 4 to 6
-                    if ( x >= thirdX && x < thirdX * 2 )
+                    else if ( _x >= thirdX && _x < thirdX * 2 )
                     {
-                        var newY = x - thirdX + fourthY * 3;
+                        var newY = _x - thirdX + fourthY * 3;
                         var newX = thirdX - 1;
                         if (_map[newY][newX] == '#') return;
                         
                         RotateRight();
                         
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                         
                     }
                     // 2 to 3
-                    if ( x >= thirdX * 2)
+                    else if ( _x >= thirdX * 2)
                     {
-                        var newY = x - thirdX;
+                        var newY = _x - thirdX;
                         var newX = thirdX * 2 - 1;
                         if (_map[newY][newX] == '#') return;
                         
                         RotateRight();
                         
-                        x = newX;
-                        y = newY;
+                        _x = newX;
+                        _y = newY;
                     }
-                    
                 }
                 break;
         }
@@ -343,7 +338,7 @@ public class CubicMonkeyMap2
         {
             if (_map[0][findNewX] == '.')
             {
-                x = findNewX;
+                _x = findNewX;
                 break;
             }
         }
@@ -353,22 +348,22 @@ public class CubicMonkeyMap2
     private dynamic GetNextInstruction()
     {
         int num;
-        if (_instrucsCounter < _instrucs.Length - 1 && int.TryParse(_instrucs.Substring(_instrucsCounter, 2), out num))
+        if (_instructionCounter < _instructions.Length - 1 && int.TryParse(_instructions.Substring(_instructionCounter, 2), out num))
         {
-            _instrucsCounter++;
-            _instrucsCounter++;
+            _instructionCounter++;
+            _instructionCounter++;
             return num;
 
         }
-        else if (_instrucsCounter < _instrucs.Length && int.TryParse(_instrucs.Substring(_instrucsCounter, 1), out num))
+        else if (_instructionCounter < _instructions.Length && int.TryParse(_instructions.Substring(_instructionCounter, 1), out num))
         {
-            _instrucsCounter++;
+            _instructionCounter++;
             return num;
         }
-        else if (_instrucsCounter < _instrucs.Length - 1)
+        else if (_instructionCounter < _instructions.Length - 1)
         {
-             var direction = _instrucs.Substring(_instrucsCounter, 1);
-            _instrucsCounter++;
+             var direction = _instructions.Substring(_instructionCounter, 1);
+            _instructionCounter++;
             return direction;
         }
 
@@ -378,35 +373,17 @@ public class CubicMonkeyMap2
 
     void Print()
     {
-        foreach (var row in _map)
-        {
-            var temp = string.Join("", row);
+        for (int i = 0; i < _map.Count; i++)
+        { 
+            var temp = ""; 
+            for (int j = 0; j < _map.First().Count; j++)
+            {
+                if (i == _y && j == _x) temp += "x";
+                else  temp += _map[i][j];
+            }
+
             Console.WriteLine(temp);
         }
-        
         Console.WriteLine();
     }
 }
-
-// 100005
-// 101781
-// 85061
-// 15550
-// 15546
-
-// 15266
-
-// 81306
-// not guessed: 81482
-
-// 140160
-// not guessed 140244
-// not guessed 140360
-
-// 145406
-// 155080
-
-
-// 73242
-
-// 35294
