@@ -15,13 +15,11 @@ public class Solver : ISolver
         var input = ParseInput("input");
 
         var f = new MiningRobots(); 
-        Console.WriteLine("Part 1: Test: " + f.FindAll(testInput, 24) + " -> 33");
-        Console.WriteLine("Part 1: " + f.FindAll(input, 24));
-        
-        Console.WriteLine("Part 2: Test: " + f.FindThree(testInput, 32) + " -> ");
-        Console.WriteLine("Part 2" + f.FindThree(input, 32));
+       // Console.WriteLine("Part 1: Test: " + f.FindBest(testInput, 24).Item1 + " -> 33");
+       // Console.WriteLine("Part 1: " + f.FindBest(input, 24).Item1);
 
-        Console.WriteLine();
+ //       Console.WriteLine("Part 2: Test: " + f.FindBest(testInput, 32, 3).Item2 + " -> 62");
+        Console.WriteLine("Part 2: " + f.FindBest(input, 32).Item2, 3);
     }
 
     public dynamic ParseInput(string fileName)
@@ -39,7 +37,6 @@ public class Solver : ISolver
             var r = rgx.Match(s);
             
              robots.Add((
-             
                  int.Parse(r.Groups[1].Value),
                  int.Parse(r.Groups[2].Value),
                 (int.Parse(r.Groups[3].Value),
@@ -48,7 +45,6 @@ public class Solver : ISolver
                  int.Parse(r.Groups[6].Value))
          ));
         }
-        
         
         return robots;
     }

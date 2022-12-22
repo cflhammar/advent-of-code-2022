@@ -3,49 +3,26 @@ using System.Diagnostics;
 namespace aoc_2022.Days.Dec19;
 
 public class MiningRobots
-{
-
-    public MiningRobots()
+{ 
+    public (int sum, int product) FindBest(List<(int oreForOre, int oreForclay, (int ore, int clay) obsidian, (int ore, int obsidian) genode)> robotData, int maxTime, int robots = 0)
     {
-        
-    }
-
-    public int FindAll(List<(int oreForOre, int oreForclay, (int ore, int clay) obsidian, (int ore, int obsidian) genode)> robotData, int maxTime)
-    {
+        if (robots > 0) robotData = robotData.Take(robots).ToList();
         var sum = 0;
+        var product = 0;
         var index = 1;
 
-        Stopwatch stopwatch = new Stopwatch();
         foreach (var setting in robotData)
         {
-            sum += index * Bfs(setting, maxTime);
+            var maxVal = Bfs(setting, maxTime);
+            Console.WriteLine("robots: " + maxVal);
+            sum += index * maxVal;
+            product *= maxVal;
             index++;
         }
 
-        Console.WriteLine(sum);
-        return sum;
+        return (sum, product);
     }
 
-    public int FindThree(List<(int oreForOre, int oreForclay, (int ore, int clay) obsidian, (int ore, int obsidian) genode)> robotData, int maxTime)
-    {
-        var sum = 1;
-        var index = 0;
-
-        Stopwatch stopwatch = new Stopwatch();
-        foreach (var setting in robotData)
-        {
-            index++;
-            stopwatch.Start();
-            sum *= Bfs(setting, maxTime);
-            stopwatch.Stop();
-            Console.WriteLine(stopwatch.Elapsed);
-            if (index == 3) break;
-        }
-
-        Console.WriteLine(sum);
-        return sum;
-    }
-    
     private int Bfs((int oreForOre, int oreForclay, (int ore, int clay) obsidian, (int ore, int obsidian) genode) robotCost, int maxTime)
     {
         var maxOreNeededPerRounds = new List<int>() {robotCost.oreForOre, robotCost.oreForclay, robotCost.obsidian.ore, robotCost.genode.ore}.Max();
@@ -65,6 +42,7 @@ public class MiningRobots
                 continue;
             }
             
+            // should be able to break if max cannot be beaten in any way
    //         if (max > (currentState.Genode + (32 - currentState.Time) * currentState.GenodeRobot + (32 - currentState.Time) * (32 - currentState.Time +1 ) / 2 ))
    //             continue;
             
