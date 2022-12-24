@@ -18,7 +18,7 @@ public class Solver : ISolver
         Console.WriteLine(es.PlayUntilStop() + " -> 20");
         
         es = new ElfSpread(input);
-        Console.WriteLine(es.PlayRounds(10) + " -> 4181");
+      //  Console.WriteLine(es.PlayRounds(10) + " -> 4181");
        // es = new ElfSpread(testInput);
        // Console.WriteLine(es.PlayUntilStop() + " -> 20");
         
