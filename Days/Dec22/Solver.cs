@@ -13,18 +13,16 @@ public class Solver : ISolver
         var input = ParseInput("input");
 
         var mm = new MonkeyMap(testInput.Item1, testInput.Item2);
-        Console.WriteLine(mm.FollowInstructions() + " -> 6032");
+        Console.WriteLine("Part 1: Test: " + mm.FollowInstructions() + " -> 6032");
         
         mm = new MonkeyMap(input.Item1, input.Item2);
-        Console.WriteLine(mm.FollowInstructions());
+        Console.WriteLine("Part 1: " + mm.FollowInstructions());
         
-
-        var tcmm = new TestFoldCubicMonkeyMap(testInput.Item1, testInput.Item2);
-        Console.WriteLine( tcmm.FollowInstructions() + " -> 5031");
+        var tcmm = new TestCubicMonkeyMap(testInput.Item1, testInput.Item2);
+        Console.WriteLine("Part 2: Test: " + tcmm.FollowInstructions() + " -> 5031");
         
-        var cmm = new CubicMonkeyMap2(input.Item1, input.Item2);
-        Console.WriteLine( cmm.FollowInstructions());
-
+        var cmm = new CubicMonkeyMap(input.Item1, input.Item2);
+        Console.WriteLine("Part 2: " + cmm.FollowInstructions());
     }
 
     public dynamic ParseInput(string fileName)
@@ -32,21 +30,21 @@ public class Solver : ISolver
         var reader = new InputReader();
         var temp = reader.GetFileContent(Date,fileName);
         var t = reader.SplitByEmptyRow(temp);
-        var t2 = reader.SplitByRow(t[0]);
-
-        var t22 = t2.Select(s => s.Replace(" ", " ")).ToList();
-        var max = t2.Select(x => x.Length).Max();
         
-        for (int row = 0; row < t22.Count(); row++)
+        var mapRaw = reader.SplitByRow(t[0]);
+        var maxRowLength = mapRaw.Select(x => x.Length).Max();
+
+        // add padding end of rows
+        for (int row = 0; row < mapRaw.Count(); row++)
         {
-            var rowMax = t22[row].Length;
-            for (int i = 0; i < max - rowMax; i++)
+            var rowMax = mapRaw[row].Length;
+            for (int i = 0; i < maxRowLength - rowMax; i++)
             {
-                t22[row] += " ";
+                mapRaw[row] += " ";
             }
         }
         
-        var t3 = reader.SplitListOfStringToListListOfCharByNoDelimeter(t22);
+        var t3 = reader.SplitListOfStringToListListOfCharByNoDelimeter(mapRaw);
 
         return (t3, t[1]);
     }

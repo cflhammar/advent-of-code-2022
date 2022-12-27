@@ -1,13 +1,13 @@
 namespace aoc_2022.Days.Dec14;
 public class SandCave
 {
-    public List<List<Type>> cave2D = new List<List<Type>>();
-    private int yMax;
+    private List<List<Type>> _cave2D = new();
+    private int _yMax;
 
     public SandCave(List<List<List<int>>> input)
     {
-        yMax = GetMaxY(input);
-        DrawLines(input, yMax);
+        _yMax = GetMaxY(input);
+        DrawLines(input, _yMax);
     }
     
     public int PourSandUntilFull(bool printTest)
@@ -16,43 +16,43 @@ public class SandCave
         var placementInfo = DropOneSand(0);
         var topOfTheHill = placementInfo.topOfTheHill;
         
-        var hasrun = false;
+        var partOne = false;
         
         while (topOfTheHill != -1)
         {
             placementInfo = DropOneSand(topOfTheHill);
             topOfTheHill = placementInfo.topOfTheHill;
 
-            if (placementInfo.heightOfSandPlaced == yMax-1 && !hasrun)
+            if (!partOne && placementInfo.heightOfSandPlaced == _yMax-1)
             {
-                Console.WriteLine("Size of compartment :" + (SumAll(printTest) - 1));
-                hasrun = true;
+                Console.WriteLine("Part 1: Size: " + (SumAll(printTest) - 1));
+                partOne = true;
             }
         }
         
         return SumAll(printTest);
     }
 
-    public (int topOfTheHill, int heightOfSandPlaced) DropOneSand(int topOfTheHill)
+    private (int topOfTheHill, int heightOfSandPlaced) DropOneSand(int topOfTheHill)
     {
         (int x, int y) sand = (500,0);
 
         while (true)
         {
-            if (sand.y + 1 < cave2D.First().Count)
+            if (sand.y + 1 < _cave2D.First().Count)
             {
-                if (cave2D[sand.x][sand.y + 1].IsAir)
+                if (_cave2D[sand.x][sand.y + 1].IsAir)
                 {
                     sand = (sand.x, sand.y + 1);
                     if (sand.x == 500) topOfTheHill = sand.y;
                     continue;
                 }
-                else if (cave2D[sand.x-1][sand.y + 1].IsAir)
+                else if (_cave2D[sand.x-1][sand.y + 1].IsAir)
                 {
                     sand = (sand.x - 1, sand.y + 1);
                     continue;
                 }
-                else if (cave2D[sand.x+1][sand.y + 1].IsAir)
+                else if (_cave2D[sand.x+1][sand.y + 1].IsAir)
                 {
                     sand = (sand.x + 1, sand.y + 1);
                     continue;
@@ -62,12 +62,12 @@ public class SandCave
             break;
         }
         
-        cave2D[sand.x][sand.y].ToSand();
+        _cave2D[sand.x][sand.y].ToSand();
         return (topOfTheHill, sand.y);
     }
 
 
-    public void DrawLine(List<int> point1, List<int> point2)
+    private void DrawLine(List<int> point1, List<int> point2)
     {
 
         var xFrom = Math.Min(point1[0], point2[0]);
@@ -79,19 +79,19 @@ public class SandCave
         {
             for (int y = yFrom; y <= yTo; y++)
             {
-                cave2D[x][y].ToRock();
+                _cave2D[x][y].ToRock();
             }
         }
     }
-    
-    public int SumAll(bool printTest)
+
+    private int SumAll(bool printTest)
     {
         var sum = 0;
-        for (int i = 0; i < cave2D.Count;  i++)
+        for (int i = 0; i < _cave2D.Count;  i++)
         {
-            for (int a = 0 ; a < cave2D.First().Count; a++)
+            for (int a = 0 ; a < _cave2D.First().Count; a++)
             {
-                if (cave2D[i][a].IsSand)
+                if (_cave2D[i][a].IsSand)
                 {
                     sum++;
                 }
@@ -105,7 +105,7 @@ public class SandCave
     private void Print()
     {
         Thread.Sleep(70);
-        var a = cave2D.Skip(485).Take(30).ToList();
+        var a = _cave2D.Skip(485).Take(30).ToList();
         for (int i = 0; i < a.First().Count; i++)
         { 
                 var temp = new List<Type>();
@@ -124,10 +124,10 @@ public class SandCave
     {
         for (int x = 0; x < 1000; x++)
         {
-            cave2D.Add(new List<Type>());
+            _cave2D.Add(new List<Type>());
             for (int y = 0; y < yMax; y++)
             {
-                cave2D[x].Add(new Type());
+                _cave2D[x].Add(new Type());
             }
         }
 

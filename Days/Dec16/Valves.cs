@@ -1,5 +1,3 @@
-using Microsoft.VisualBasic;
-
 namespace aoc_2022.Days.Dec16;
 
 public class Valves
@@ -92,7 +90,7 @@ public class Valves
     }
 
 
-    private long GetPathFlowRate(List<string> path, List<int> time)
+    private long GetPathFlowRate(List<string?> path, List<int> time)
     {
         long sum = 0;
         for (int i = 0; i < path.Count(); i++)
@@ -130,7 +128,7 @@ public class Valves
         _paths.TryAdd(hash, totalFlowRate);
     }
 
-    private void FollowPath(string current,List<string> myPath, List<int> myPathTime, List<string> toVisit, int spent)
+    private void FollowPath(string? current,List<string> myPath, List<int> myPathTime, List<string> toVisit, int spent)
     {
         myPath.Add(current);
         myPathTime.Add(spent);
@@ -145,7 +143,7 @@ public class Valves
             var copyToVisit = new List<string>(toVisit);
             int copySpent = spent;
 
-            var steps = _caves[current].paths[valveToVisit] + 1;
+            var steps = _caves[current].Paths[valveToVisit] + 1;
             int copySteps = steps;
 
             if (spent + copySteps <= _maxTime)
@@ -162,7 +160,7 @@ public class Valves
     public void AddPossibleMovesFromCaveWithBfs(Cave root)
     {
         var qu = new Queue<Cave>();
-        var paths = root.paths;
+        var paths = root.Paths;
         
         var explored = new HashSet<string> {root.Name};
         qu.Enqueue(root);

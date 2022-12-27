@@ -4,9 +4,9 @@ namespace aoc_2022.Days.Dec15;
 
 public class Sensors
 {
-    public HashSet<PlacedSensor> PlacedSensors = new HashSet<PlacedSensor>();
-    public HashSet<(int x, int y)> visited = new HashSet<(int x, int y)>();
-    private int SearchLimit = 0;
+    private readonly HashSet<PlacedSensor> _placedSensors = new();
+ //   private HashSet<(int x, int y)> _visited = new HashSet<(int x, int y)>();
+    private int _searchLimit;
 
     public Sensors(List<List<string>> input)
     {
@@ -18,15 +18,15 @@ public class Sensors
     
     public int NumberOfNoBeaconPosAtRow(int y)
     {
-        var xMin = PlacedSensors.Select(x => x.Sensor.x - x.DistanceToSensor()).Min();
-        var xMax = PlacedSensors.Select(x => x.Sensor.x + x.DistanceToSensor()).Max();
+        var xMin = _placedSensors.Select(x => x.Sensor.x - x.DistanceToSensor()).Min();
+        var xMax = _placedSensors.Select(x => x.Sensor.x + x.DistanceToSensor()).Max();
         
         var sum = 0;
         for (int x = xMin; x < xMax; x++)
         {
             var pos = (x, y);
 
-            foreach (var sensor in PlacedSensors)
+            foreach (var sensor in _placedSensors)
             {
                 if (!sensor.PosIsNotWithinDistance(pos) && PosIsNotBeacon(pos))
                 {
@@ -41,23 +41,23 @@ public class Sensors
 
     private bool PosIsNotBeacon((int x, int y) pos)
     {
-      return PlacedSensors.All(x => x.Beacon != pos);
+      return _placedSensors.All(x => x.Beacon != pos);
     }
 
     public long FindBeaconOnEdge(int searchLimit)
     {
-        SearchLimit = searchLimit;
+        _searchLimit = searchLimit;
         (int x, int y) pos = (0,0);
-        foreach (var placedSensor in PlacedSensors)
+        foreach (var placedSensor in _placedSensors)
         {
-            pos = TraverseEdge(placedSensor, searchLimit);
+            pos = TraverseEdge(placedSensor);
             if (pos != (0, 0)) break;
         }
 
         return (long) pos.x * 4000000 + pos.y;
     }
 
-    public (int, int) TraverseEdge(PlacedSensor placedSensor, int searchLimit)
+    public (int, int) TraverseEdge(PlacedSensor placedSensor)
     {
         var dist = placedSensor.DistanceToSensor();
         
@@ -78,7 +78,7 @@ public class Sensors
             pos = (pos.x + 1, pos.y + 1);
 
             var positionCanHoldBeacon = true;
-            foreach (var otherSensor in PlacedSensors)
+            foreach (var otherSensor in _placedSensors)
             {
                 if (positionCanHoldBeacon && !otherSensor.PosIsNotWithinDistance(pos))
                 {
@@ -87,7 +87,7 @@ public class Sensors
                 }
             }
 
-            if (positionCanHoldBeacon && pos.x >= 0 && pos.x <= SearchLimit && pos.y >= 0 && pos.y <= SearchLimit)
+            if (positionCanHoldBeacon && pos.x >= 0 && pos.x <= _searchLimit && pos.y >= 0 && pos.y <= _searchLimit)
             {
                 return (pos);
             }
@@ -105,7 +105,7 @@ public class Sensors
             pos = (pos.x + 1, pos.y - 1);
 
             var positionCanHoldBeacon = true;
-            foreach (var otherSensor in PlacedSensors)
+            foreach (var otherSensor in _placedSensors)
             {
                 if (positionCanHoldBeacon && !otherSensor.PosIsNotWithinDistance(pos))
                 {
@@ -114,7 +114,7 @@ public class Sensors
                 }
             }
 
-            if (positionCanHoldBeacon && pos.x >= 0 && pos.x <= SearchLimit && pos.y >= 0 && pos.y <= SearchLimit)
+            if (positionCanHoldBeacon && pos.x >= 0 && pos.x <= _searchLimit && pos.y >= 0 && pos.y <= _searchLimit)
             {
                 return (pos);
             }
@@ -132,7 +132,7 @@ public class Sensors
             pos = (pos.x - 1, pos.y - 1);
 
             var positionCanHoldBeacon = true;
-            foreach (var otherSensor in PlacedSensors)
+            foreach (var otherSensor in _placedSensors)
             {
                 if (positionCanHoldBeacon && !otherSensor.PosIsNotWithinDistance(pos))
                 {
@@ -141,7 +141,7 @@ public class Sensors
                 }
             }
 
-            if (positionCanHoldBeacon && pos.x >= 0 && pos.x <= SearchLimit && pos.y >= 0 && pos.y <= SearchLimit)
+            if (positionCanHoldBeacon && pos.x >= 0 && pos.x <= _searchLimit && pos.y >= 0 && pos.y <= _searchLimit)
             {
                 return (pos);
             }
@@ -159,7 +159,7 @@ public class Sensors
         {
             pos = (pos.x - 1, pos.y + 1);
             var positionCanHoldBeacon = true;
-            foreach (var otherSensor in PlacedSensors)
+            foreach (var otherSensor in _placedSensors)
             {
                 if (positionCanHoldBeacon && !otherSensor.PosIsNotWithinDistance(pos))
                 {
@@ -168,7 +168,7 @@ public class Sensors
                 }
             }
 
-            if (positionCanHoldBeacon && pos.x >= 0 && pos.x <= SearchLimit && pos.y >= 0 && pos.y <= SearchLimit)
+            if (positionCanHoldBeacon && pos.x >= 0 && pos.x <= _searchLimit && pos.y >= 0 && pos.y <= _searchLimit)
             {
                 return (pos);
             }
@@ -179,21 +179,21 @@ public class Sensors
 
     public void CreateSensor(List<string> line)
     {
-        var sens = line[0].Replace("Sensor at ","").Split(",");
-        var beac = line[1].Replace("closest beacon is at ","").Split(",");;
+        var sensor = line[0].Replace("Sensor at ","").Split(",");
+        var beacon = line[1].Replace("closest beacon is at ","").Split(",");
 
-        var beacX = beac[0].Split("=")[1];
-        var beacY = beac[1].Split("=")[1];
+        var beaconX = beacon[0].Split("=")[1];
+        var beaconY = beacon[1].Split("=")[1];
         
-        var sensX = sens[0].Split("=")[1];
-        var sensY = sens[1].Split("=")[1];
+        var sensorX = sensor[0].Split("=")[1];
+        var sensorY = sensor[1].Split("=")[1];
 
         var placedSens = new PlacedSensor()
         {
-            Sensor = (Int32.Parse(sensX), Int32.Parse(sensY)),
-            Beacon = (Int32.Parse(beacX), Int32.Parse(beacY)),
+            Sensor = (Int32.Parse(sensorX), Int32.Parse(sensorY)),
+            Beacon = (Int32.Parse(beaconX), Int32.Parse(beaconY)),
         };
         
-        PlacedSensors.Add(placedSens);
+        _placedSensors.Add(placedSens);
     }
 }

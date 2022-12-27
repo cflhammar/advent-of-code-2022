@@ -27,7 +27,7 @@ public class FileSystem
 
     private int SizeOfDirAndItsContents(Directory? dir)
     {
-        var sizeOfFiles = dir.Files.Select(d => d.Size).Sum();
+        var sizeOfFiles = dir!.Files.Select(d => d.Size).Sum();
         var sizeOfSubFolders = dir.SubDir.Select(SizeOfDirAndItsContents).Sum();
         
         FolderSizes.Add( sizeOfFiles+sizeOfSubFolders);
@@ -45,12 +45,12 @@ public class FileSystem
             
             else if (commands[i] == "$ cd ..")
             {
-                currentFolder = currentFolder.RootDir;
+                currentFolder = currentFolder?.RootDir;
             }
             
             else if (commands[i].Contains("$ cd "))
             {
-                currentFolder = currentFolder.SubDir.First(x => x.Name == commands[i].Split(" ")[2]);
+                currentFolder = currentFolder?.SubDir.First(x => x?.Name == commands[i].Split(" ")[2]);
             }
             
             else if (commands[i] == "$ ls")
@@ -70,13 +70,13 @@ public class FileSystem
                             Name = commands[j].Split(" ")[1],
                             RootDir = currentFolder
                         };
-                        currentFolder.SubDir.Add(dir);
+                        currentFolder?.SubDir.Add(dir);
                     }
                     
                     else
                     {
                         var file = new Fyle() {Size = Int32.Parse(commands[j].Split(" ").First())};
-                        currentFolder.Files.Add(file);
+                        currentFolder?.Files.Add(file);
                     }
                 }
             }

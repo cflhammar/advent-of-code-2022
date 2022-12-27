@@ -12,16 +12,14 @@ public class Solver : ISolver
         var testInput = ParseInput("test2");
         var input = ParseInput("input");
 
-        var es = new ElfSpread(testInput);
-        Console.WriteLine(es.PlayRounds(10) + " -> 110");
-        es = new ElfSpread(testInput);
-        Console.WriteLine(es.PlayUntilStop() + " -> 20");
+        var esTest = new ElfSpread(testInput);
+        var es = new ElfSpread(input);
         
-        es = new ElfSpread(input);
-      //  Console.WriteLine(es.PlayRounds(10) + " -> 4181");
-       // es = new ElfSpread(testInput);
-       // Console.WriteLine(es.PlayUntilStop() + " -> 20");
+        Console.WriteLine("Part 1: Test: " + esTest.PlayRounds(10) + " -> 110");
+        Console.WriteLine("Part 1: " + es.PlayRounds(10) );
         
+        Console.WriteLine("Part 2: Test:  " + (esTest.PlayUntilStop() + 10) + " -> 20");  // add 10 rounds already played in part1
+        Console.WriteLine("Part 2: " + (es.PlayUntilStop() + 10));
     }
 
     public dynamic ParseInput(string fileName)

@@ -13,10 +13,10 @@ public class Solver : ISolver
         var input = ParseInput("input");
         
         var cs = new SandCave(testInput);
-        Console.WriteLine(cs.PourSandUntilFull(true));
+        Console.WriteLine("Part 2: Test: " + cs.PourSandUntilFull(true));
         
-       cs = new SandCave(input);
-        Console.WriteLine(cs.PourSandUntilFull(false));
+        cs = new SandCave(input);
+        Console.WriteLine("Part 2: " + cs.PourSandUntilFull(false));
         
     }
 

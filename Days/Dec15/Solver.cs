@@ -1,4 +1,3 @@
-using System;
 using aoc_2022.Helpers;
 
 namespace aoc_2022.Days.Dec15;
@@ -13,12 +12,12 @@ public class Solver : ISolver
         var input = ParseInput("input");
 
         var s = new Sensors(testInput);
-        Console.WriteLine(s.NumberOfNoBeaconPosAtRow(10));
-        Console.WriteLine(s.FindBeaconOnEdge(20));
+        Console.WriteLine("Part 1: Test: " + s.NumberOfNoBeaconPosAtRow(10) + " ->  26");
+        Console.WriteLine("Part 2: Test: " + s.FindBeaconOnEdge(20) + " -> 56000011");
          
         s = new Sensors(input);
-        Console.WriteLine(s.NumberOfNoBeaconPosAtRow(2000000));
-        Console.WriteLine(s.FindBeaconOnEdge(4000000));
+        Console.WriteLine("Part 1: " + s.NumberOfNoBeaconPosAtRow(2000000));
+        Console.WriteLine("Part 2: " + s.FindBeaconOnEdge(4000000));
         
 
       //  Console.WriteLine(s.NumberOfNoBeaconPosAtRow(2000000));

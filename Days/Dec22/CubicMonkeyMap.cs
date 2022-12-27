@@ -1,6 +1,6 @@
 namespace aoc_2022.Days.Dec22;
 
-public class CubicMonkeyMap2
+public class CubicMonkeyMap
 {
     private readonly List<List<char>> _map;
     private readonly string _instructions;
@@ -10,7 +10,7 @@ public class CubicMonkeyMap2
     private int _y;
     
     
-    public CubicMonkeyMap2(List<List<char>> inputMap, string instruction)
+    public CubicMonkeyMap(List<List<char>> inputMap, string instruction)
     {
         _map = inputMap;
         _instructions = instruction;

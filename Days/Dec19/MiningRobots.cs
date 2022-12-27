@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace aoc_2022.Days.Dec19;
 
 public class MiningRobots
@@ -14,7 +12,7 @@ public class MiningRobots
         foreach (var setting in robotData)
         {
             var maxVal = Bfs(setting, maxTime);
-            Console.WriteLine("robots: " + maxVal);
+            Console.WriteLine("max Genodes for robot set-up: " + maxVal);
             sum += index * maxVal;
             product *= maxVal;
             index++;
@@ -43,14 +41,13 @@ public class MiningRobots
             }
             
             // should be able to break if max cannot be beaten in any way
-   //         if (max > (currentState.Genode + (32 - currentState.Time) * currentState.GenodeRobot + (32 - currentState.Time) * (32 - currentState.Time +1 ) / 2 ))
-   //             continue;
+   //         if (max > (currentState.Genode + (32 - currentState.Time) * currentState.GenodeRobot + (32 - currentState.Time) * (32 - currentState.Time +1 ) / 2 )) continue;
             
             var hash = currentState.ToString();
             if (memory.Contains(hash)) continue;
             else memory.Add(hash);
             
-            // always build genode robot
+            // always build genode robot and do nothing else if possible (not sure if true but works for my input)
             if (currentState.Ore >= robotCost.genode.ore && currentState.Obsidian >= robotCost.genode.obsidian && currentState.Time <= maxTime -1)
             {
                 var next = new State()
@@ -141,21 +138,20 @@ public class MiningRobots
             }
         }
 
-        Console.WriteLine(max);
         return max;
     }
 }
 
 public class State
 {
-    public int Ore = 0;
+    public int Ore;
     public int OreRobot = 1;
-    public int Clay = 0;
-    public int ClayRobot = 0;
-    public int Obsidian = 0;
-    public int ObsidianRobot = 0;
-    public int Genode = 0;
-    public int GenodeRobot = 0;
+    public int Clay;
+    public int ClayRobot;
+    public int Obsidian;
+    public int ObsidianRobot;
+    public int Genode;
+    public int GenodeRobot;
     public int Time = 1;
 
     public override string ToString()

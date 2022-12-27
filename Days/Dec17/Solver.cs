@@ -16,7 +16,7 @@ public class Solver : ISolver
         Console.WriteLine( "Part 1: Test: "+ t.Play(2022) + " (3068)");
         
         t = new Tetris(input);
-        Console.WriteLine( "Part 1: "+ t.Play(2022) + " (3149)");
+        Console.WriteLine( "Part 1: " + t.Play(2022));
         
         t = new Tetris(testInput);
         Console.WriteLine( "Part 2: Test: "+ t.Play(1000000000000) + " (1514285714288)");

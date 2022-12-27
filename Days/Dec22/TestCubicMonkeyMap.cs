@@ -1,6 +1,6 @@
 namespace aoc_2022.Days.Dec22;
 
-public class TestFoldCubicMonkeyMap
+public class TestCubicMonkeyMap
 {
     private List<List<char>> _map;
     private string _instrucs;
@@ -10,7 +10,7 @@ public class TestFoldCubicMonkeyMap
     private int y;
 
 
-    public TestFoldCubicMonkeyMap(List<List<char>> inputmap, string instruction)
+    public TestCubicMonkeyMap(List<List<char>> inputmap, string instruction)
     {
         _map = inputmap;
         _instrucs = instruction;

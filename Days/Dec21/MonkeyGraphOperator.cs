@@ -14,7 +14,7 @@ public class MonkeyGraphOperator
 
     private long GetGraphValue(Node? node)
     {
-        if (node.Value > 0) return node.Value;
+        if (node!.Value > 0) return node.Value;
 
         switch (node.Operation)
         {
@@ -39,17 +39,12 @@ public class MonkeyGraphOperator
         long below = 99999999999999;
         long step = 10000000000;
        
+        // TODO: Fix for test
         for (long humn = above; humn < below; humn += step)
         {
-            graph["humn"].Value = humn;
-            long left = GetGraphValue(graph["root"].Left);
-            long right = GetGraphValue(graph["root"].Right);
-            
-            /*
-            Console.WriteLine("humn:" + humn + " ->  l: " +  left + " - r: " + right + " = " + (left - right) );
-            Console.WriteLine("below: " + below + ", above: " +  above + ", step: " + step);
-            Console.WriteLine((below - above) + ": " + (below - above)/10 );
-            */
+            graph["humn"]!.Value = humn;
+            long left = GetGraphValue(graph["root"]?.Left);
+            long right = GetGraphValue(graph["root"]?.Right);
             
             if (left == right)
             {
@@ -80,7 +75,7 @@ public class MonkeyGraphOperator
             
             if (Int32.TryParse(line[1], out var num))
             {
-                if (graph.ContainsKey(name)) graph[name].Value = num;
+                if (graph.ContainsKey(name)) graph[name]!.Value = num;
                 else graph.Add(name, new Node(){Name = name, Value = num});
             }
             else
@@ -116,19 +111,19 @@ public class MonkeyGraphOperator
                 }
                 else  // key alrady exists
                 {
-                    graph[name].Operation = op;
+                    graph[name]!.Operation = op;
                     
                     if (!graph.ContainsKey(left))
                     {
                         graph.Add(left, new Node(){Name = name});
                     }
-                    graph[name].Left = graph[left];
+                    graph[name]!.Left = graph[left];
                     
                     if (!graph.ContainsKey(right))
                     {
                         graph.Add(right, new Node(){Name = name});
                     }
-                    graph[name].Right = graph[right];
+                    graph[name]!.Right = graph[right];
                 }
             }
         }

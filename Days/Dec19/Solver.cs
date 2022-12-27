@@ -15,11 +15,11 @@ public class Solver : ISolver
         var input = ParseInput("input");
 
         var f = new MiningRobots(); 
-       // Console.WriteLine("Part 1: Test: " + f.FindBest(testInput, 24).Item1 + " -> 33");
-       // Console.WriteLine("Part 1: " + f.FindBest(input, 24).Item1);
-
- //       Console.WriteLine("Part 2: Test: " + f.FindBest(testInput, 32, 3).Item2 + " -> 62");
-        Console.WriteLine("Part 2: " + f.FindBest(input, 32).Item2, 3);
+        Console.WriteLine("Part 1: Test: " + f.FindBest(testInput, 24).Item1 + " -> 33");
+        Console.WriteLine("Part 1: " + f.FindBest(input, 24).Item1);
+        
+        // Console.WriteLine("Part 2: Test: " + f.FindBest(testInput, 32, 3).Item2 + " -> 62");
+        Console.WriteLine("Part 2: " + f.FindBest(input, 32, 3).Item2);
     }
 
     public dynamic ParseInput(string fileName)

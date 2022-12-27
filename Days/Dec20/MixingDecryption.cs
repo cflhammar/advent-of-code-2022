@@ -20,8 +20,8 @@ public class MixingDecryption
         var n = linkedList.First(x => x.Value.Val == 0).Value;
         for (int i = 1; i <= 3000; i++)
         {
-            n = n.Next;
-            if (i % 1000 == 0) sum += n.Val;
+            n = n?.Next;
+            if (i % 1000 == 0) sum += n!.Val;
         }
         
         return sum;
@@ -41,16 +41,16 @@ public class MixingDecryption
                 var node = linkedList[index];
                 var prev = node.Prev;
                 var next = node.Next;
-                var nextNext = next.Next;
+                var nextNext = next!.Next;
 
-                prev.Next = next;
+                prev!.Next = next;
                 next.Prev = prev;
 
                 node.Prev = next;
                 next.Next = node;
 
                 node.Next = nextNext;
-                nextNext.Prev = node;
+                nextNext!.Prev = node;
             }
         }
         else
@@ -60,16 +60,16 @@ public class MixingDecryption
                 var node = linkedList[index];
                 var prev = node.Prev;
                 var next = node.Next;
-                var prevPrev = prev.Prev;
+                var prevPrev = prev?.Prev;
 
-                prevPrev.Next = node;
+                prevPrev!.Next = node;
                 node.Prev = prevPrev;
 
                 node.Next = prev;
-                prev.Prev = node;
+                prev!.Prev = node;
 
                 prev.Next = next;
-                next.Prev = prev;
+                next!.Prev = prev;
             }
         }
     }
@@ -108,8 +108,8 @@ public class MixingDecryption
     public class LinkedNumber
     {
         public long Val;
-        public LinkedNumber Next;
-        public LinkedNumber Prev;
+        public LinkedNumber? Next;
+        public LinkedNumber? Prev;
     
         public LinkedNumber(long v)
         {
