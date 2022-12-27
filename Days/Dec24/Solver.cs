@@ -12,8 +12,19 @@ public class Solver : ISolver
         var testInput = ParseInput("test1");
         var input = ParseInput("input");
 
-        var b = new Blizzard(input);
-        b.ThereAndBackAgainAndAgain();
+        var b = new Blizzard(testInput);
+        Console.WriteLine("Part 1: Test: " +  b.FindShortestPath() + " -> 18");
+        b = new Blizzard(input);
+        Console.WriteLine("Part 1: " +  b.FindShortestPath());
+
+        b = new Blizzard(testInput);
+        Console.WriteLine("Part 2: Test: " +  b.ThereAndBackAgainAndAgain() + " -> 54");
+        b = new Blizzard(input);
+        Console.WriteLine("Part 2: " +  b.ThereAndBackAgainAndAgain());
+        
+        
+        
+        
         
         
         

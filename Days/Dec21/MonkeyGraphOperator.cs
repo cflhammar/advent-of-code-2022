@@ -12,7 +12,7 @@ public class MonkeyGraphOperator
        return sum;
     }
 
-    private long GetGraphValue(Node node)
+    private long GetGraphValue(Node? node)
     {
         if (node.Value > 0) return node.Value;
 
@@ -20,18 +20,12 @@ public class MonkeyGraphOperator
         {
             case "+":
                 return GetGraphValue(node.Left) + GetGraphValue(node.Right);
-                break;
             case "-":
                 return GetGraphValue(node.Left) - GetGraphValue(node.Right);
-
-                break;
             case "*":
                 return GetGraphValue(node.Left) * GetGraphValue(node.Right);
-
-                break;
             case "/":
                 return GetGraphValue(node.Left) / GetGraphValue(node.Right);
-                break;
         }
 
         return 0;
@@ -76,9 +70,9 @@ public class MonkeyGraphOperator
         return 0;
     }
     
-    private Dictionary<string, Node> CreateGraph(List<List<string>> input)
+    private Dictionary<string, Node?> CreateGraph(List<List<string>> input)
     {
-        Dictionary<string, Node> graph = new();
+        Dictionary<string, Node?> graph = new();
 
         foreach (var line in input)
         {
@@ -146,9 +140,9 @@ public class MonkeyGraphOperator
 
 public class Node
 {
-    public Node Left;
-    public Node Right;
-    public string Name;
+    public Node? Left;
+    public Node? Right;
+    public string? Name;
     public long Value;
-    public string Operation;
+    public string? Operation;
 }

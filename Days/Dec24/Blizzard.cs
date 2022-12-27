@@ -2,11 +2,11 @@ namespace aoc_2022.Days.Dec24;
 
 public class Blizzard
 {
-    private List<(int x, int y)> _blizPos = new();
-    private List<(int x, int y)> _blizMove = new();
-    private List<string> _map;
-    private (int x, int y) start;
-    private (int x, int y) stop;
+    private List<(int x, int y)> _blizzardCurrentPositions = new();
+    private readonly List<(int x, int y)> _blizzardDirection = new();
+    private readonly List<string> _map;
+    private (int x, int y) _start;
+    private (int x, int y) _stop;
 
     public Blizzard(List<string> input)
     {
@@ -16,12 +16,12 @@ public class Blizzard
         {
             if (_map[0][x] == '.')
             {
-                start = (x, 0);
+                _start = (x, 0);
             }
             
             if (_map[_map.Count - 1][x] == '.')
             {
-                stop = (x, _map.Count - 1);
+                _stop = (x, _map.Count - 1);
             }
         }
         
@@ -32,21 +32,21 @@ public class Blizzard
                 switch (input[i][j])
                 {
                     case '>':
-                        _blizPos.Add((j, i));
-                        _blizMove.Add((1, 0));
+                        _blizzardCurrentPositions.Add((j, i));
+                        _blizzardDirection.Add((1, 0));
                         
                         break;
                     case '<':
-                        _blizPos.Add((j, i));
-                        _blizMove.Add((-1, 0));
+                        _blizzardCurrentPositions.Add((j, i));
+                        _blizzardDirection.Add((-1, 0));
                         break;
                     case '^':
-                        _blizPos.Add((j, i));
-                        _blizMove.Add((0, -1));
+                        _blizzardCurrentPositions.Add((j, i));
+                        _blizzardDirection.Add((0, -1));
                         break;
                     case 'v':
-                        _blizPos.Add((j, i));
-                        _blizMove.Add((0, 1));
+                        _blizzardCurrentPositions.Add((j, i));
+                        _blizzardDirection.Add((0, 1));
                         break;
                 }
             }
@@ -56,34 +56,27 @@ public class Blizzard
     public int ThereAndBackAgainAndAgain()
     {
         var sum = 0;
-        sum += Bfs();
+        sum += FindShortestPath();
 
-        var temp = start;
-        start = stop;
-        stop = temp;
+        var temp = _start;
+        _start = _stop;
+        _stop = temp;
 
-        sum += Bfs() + 1;
+        sum += FindShortestPath() + 1;  // add one for waiting when turning around
         
-        temp = start;
-        start = stop;
-        stop = temp;
+        temp = _start;
+        _start = _stop;
+        _stop = temp;
 
-        sum += Bfs() + 1;
-
+        sum += FindShortestPath() + 1; // add one for waiting when turning around
         
-        Console.WriteLine(sum);
         return sum;
-
-
     }
     
-    
-    
-
-    public int Bfs()
+    public int FindShortestPath()
     {
         var set = new HashSet<(int x, int y)>();
-        set.Add(start);
+        set.Add(_start);
         var time = 0;
         
         while (true)
@@ -93,9 +86,8 @@ public class Blizzard
             
             foreach (var clone in set)
             {
-                if (clone == stop)
+                if (clone == _stop)
                 {
-                    Console.WriteLine(time);
                     return time;
                 }
                 
@@ -131,42 +123,35 @@ public class Blizzard
             time++;
             set = next;
         }
-        
-        return 0;
     }
-
-    public class State
-    {
-        public (int x, int y) Pos;
-        public int Dist;
-    }
-
+    
     bool PositionIsSafe((int x, int y) pos)
     {
-        if (pos == start || pos == stop) return true;
+        if (pos == _start || pos == _stop) return true;
         
         bool isWithinBoundsX = pos.x > 0 && pos.x < _map.First().Length - 1;
         bool isWithinBoundsY = pos.y > 0 && pos.y < _map.Count - 1;
-        bool isNotBlizzard = !_blizPos.Contains(pos);
+        bool isNotBlizzard = !_blizzardCurrentPositions.Contains(pos);
 
         return isWithinBoundsX && isWithinBoundsY && isNotBlizzard;
     }
     
     void MoveBlizzard()
     {
-        for (int i = 0; i < _blizPos.Count; i++)
+        for (int i = 0; i < _blizzardCurrentPositions.Count; i++)
         {
-            var xNew = (_blizPos[i].x + _blizMove[i].x) % (_map.First().Length - 2);
+            var xNew = (_blizzardCurrentPositions[i].x + _blizzardDirection[i].x) % (_map.First().Length - 2);
             if (xNew == 0) xNew = _map.First().Length - 2;
             
-            var yNew = (_blizPos[i].y + _blizMove[i].y) % (_map.Count - 2);
+            var yNew = (_blizzardCurrentPositions[i].y + _blizzardDirection[i].y) % (_map.Count - 2);
             if (yNew == 0) yNew = _map.Count - 2;
 
-            _blizPos[i] = (xNew, yNew);
+            _blizzardCurrentPositions[i] = (xNew, yNew);
         }
     }
-    
-    void Print(HashSet<(int x, int y)> positions)
+
+/*
+    private void Print(HashSet<(int x, int y)> elfPositions)
     {
         for (int y = 0; y < _map.Count; y++)
         {
@@ -174,12 +159,13 @@ public class Blizzard
             for (int x = 0; x < _map.First().Length; x++)
             { 
                 if (_map[y][x] == '#') temp += "#";
-                else if (_blizPos.Contains((x, y))) temp += "O";
-                else if (positions.Contains((x, y))) temp += "e";
+                else if (_blizardCurrentPosisions.Contains((x, y))) temp += "O";
+                else if (elfPositions.Contains((x, y))) temp += "e";
                 else temp += ".";
             }
             Console.WriteLine(temp);
         }
         Console.WriteLine();
     }
+*/
 }

@@ -2,7 +2,7 @@ namespace aoc_2022.Days.Dec07;
 
 public class FileSystem
 {
-    private Directory Root = new(){Name = "root"};
+    private Directory? Root = new(){Name = "root"};
     
    private List<int> FolderSizes = new (); 
 
@@ -25,7 +25,7 @@ public class FileSystem
         return  minFolderSize;
     }
 
-    private int SizeOfDirAndItsContents(Directory dir)
+    private int SizeOfDirAndItsContents(Directory? dir)
     {
         var sizeOfFiles = dir.Files.Select(d => d.Size).Sum();
         var sizeOfSubFolders = dir.SubDir.Select(SizeOfDirAndItsContents).Sum();

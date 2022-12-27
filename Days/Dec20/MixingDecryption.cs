@@ -6,7 +6,7 @@ public class MixingDecryption
     {
         var linkedList = CreateList(numbers);
 
-        foreach (var (key, value) in linkedList)
+        foreach (var (_, value) in linkedList)
         {
             value.Val *= multiplier ;
         }
@@ -41,7 +41,7 @@ public class MixingDecryption
                 var node = linkedList[index];
                 var prev = node.Prev;
                 var next = node.Next;
-                var nextnext = next.Next;
+                var nextNext = next.Next;
 
                 prev.Next = next;
                 next.Prev = prev;
@@ -49,8 +49,8 @@ public class MixingDecryption
                 node.Prev = next;
                 next.Next = node;
 
-                node.Next = nextnext;
-                nextnext.Prev = node;
+                node.Next = nextNext;
+                nextNext.Prev = node;
             }
         }
         else
@@ -60,10 +60,10 @@ public class MixingDecryption
                 var node = linkedList[index];
                 var prev = node.Prev;
                 var next = node.Next;
-                var prevprev = prev.Prev;
+                var prevPrev = prev.Prev;
 
-                prevprev.Next = node;
-                node.Prev = prevprev;
+                prevPrev.Next = node;
+                node.Prev = prevPrev;
 
                 node.Next = prev;
                 prev.Prev = node;
@@ -104,19 +104,6 @@ public class MixingDecryption
         
         return dict;
     }
-
-    private void PrintList(Dictionary<int,LinkedNumber> d)
-    {
-        var node = d[0];
-        var s = "";
-        foreach (var unused in d)
-        {
-            s += " -> "  +  node.Val;
-            node = node.Next;
-        }
-
-        Console.WriteLine(s);
-    }
     
     public class LinkedNumber
     {
@@ -129,5 +116,20 @@ public class MixingDecryption
             Val = v;
         }
     }
+    
+    /*
+    private void PrintList(Dictionary<int,LinkedNumber> d)
+    {
+        var node = d[0];
+        var s = "";
+        foreach (var unused in d)
+        {
+            s += " -> "  +  node.Val;
+            node = node.Next;
+        }
+
+        Console.WriteLine(s);
+    }
+*/
 }
 

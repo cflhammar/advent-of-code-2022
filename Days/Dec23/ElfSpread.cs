@@ -55,17 +55,6 @@ public class ElfSpread
             if (ElfWantToMove(elf))
             {
                 elvesThatWantToMove++;
-
-                for (int i = 0; i < 4; i++)
-                {
-                    var func = (_currentMovement + i) % 4;
-                    Console.WriteLine(func);
-                    
-                    
-                }
-                Console.WriteLine();
-                
-                
                 
                 switch (_currentMovement)
                 {
@@ -211,3 +200,13 @@ public class ElfSpread
         Console.WriteLine();
     }
 }
+
+/* some sort of que maybe to check movements more nice
+                for (int i = 0; i < 4; i++)
+                {
+                    var func = (_currentMovement + i) % 4;
+                    Console.WriteLine(func);
+                    
+                }
+                Console.WriteLine();
+  */
