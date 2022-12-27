@@ -2,22 +2,22 @@ namespace aoc_2022.Days.Dec07;
 
 public class FileSystem
 {
-    private Directory? Root = new(){Name = "root"};
+    private Directory? _root = new(){Name = "root"};
     
-   private List<int> FolderSizes = new (); 
+   private List<int> _folderSizes = new (); 
 
     public int SumOfAllDirsBelowSize(int size)
     {
-        FolderSizes.Add(SizeOfDirAndItsContents(Root));
-        return FolderSizes.Where(x => x < size).Sum();
+        _folderSizes.Add(SizeOfDirAndItsContents(_root));
+        return _folderSizes.Where(x => x < size).Sum();
     }
 
     public int FreeUpSpace(int size)
     {
-        var currentlyFree = 70000000 - FolderSizes.Last();
+        var currentlyFree = 70000000 - _folderSizes.Last();
 
         var minFolderSize = 70000000; 
-        foreach (var folder in FolderSizes)
+        foreach (var folder in _folderSizes)
         {
             if (currentlyFree + folder > size && folder < minFolderSize) minFolderSize = folder;
         }
@@ -30,18 +30,18 @@ public class FileSystem
         var sizeOfFiles = dir!.Files.Select(d => d.Size).Sum();
         var sizeOfSubFolders = dir.SubDir.Select(SizeOfDirAndItsContents).Sum();
         
-        FolderSizes.Add( sizeOfFiles+sizeOfSubFolders);
+        _folderSizes.Add( sizeOfFiles+sizeOfSubFolders);
 
         return sizeOfFiles + sizeOfSubFolders;
     }
     
     public void CreateFileSystem(List<string> commands)
     {
-        var currentFolder = Root;
+        var currentFolder = _root;
         
         for  (int i = 0; i < commands.Count; i++)
         {
-            if (commands[i] == "$ cd /") currentFolder = Root;
+            if (commands[i] == "$ cd /") currentFolder = _root;
             
             else if (commands[i] == "$ cd ..")
             {
@@ -50,7 +50,7 @@ public class FileSystem
             
             else if (commands[i].Contains("$ cd "))
             {
-                currentFolder = currentFolder?.SubDir.First(x => x?.Name == commands[i].Split(" ")[2]);
+                currentFolder = currentFolder?.SubDir.First(x => x.Name == commands[i].Split(" ")[2]);
             }
             
             else if (commands[i] == "$ ls")
@@ -68,7 +68,7 @@ public class FileSystem
                         var dir = new Directory()
                         {
                             Name = commands[j].Split(" ")[1],
-                            RootDir = currentFolder
+                            RootDir = currentFolder!
                         };
                         currentFolder?.SubDir.Add(dir);
                     }

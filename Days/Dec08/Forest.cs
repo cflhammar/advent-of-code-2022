@@ -1,23 +1,21 @@
-using System.Data;
-
 namespace aoc_2022.Days.Dec08;
 
 public class Forest
 {
-    public List<List<int>> Trees = new ();
+    private List<List<int>> _trees;
 
     public Forest(List<List<int>> trees)
     {
-        Trees = trees;
+        _trees = trees;
     }
 
     public (int totalVisible, int scenicScore) CountVisibleTrees()
     {
         var max = 0;
         var visible = 0;
-        for (int i = 1; i < Trees.Count-1; i++)
+        for (int i = 1; i < _trees.Count-1; i++)
         {
-            for (int j = 1; j < Trees.First().Count-1; j++)
+            for (int j = 1; j < _trees.First().Count-1; j++)
             {
                 var tree = TreeIsVisible(i, j);
                 if (tree.isVisible) visible++;
@@ -26,10 +24,10 @@ public class Forest
             }
         }
         
-        return (visible + Trees.First().Count * 4 - 4, max);
+        return (visible + _trees.First().Count * 4 - 4, max);
     }
 
-    public (bool isVisible, int scenicScore) TreeIsVisible(int row, int col)
+    private (bool isVisible, int scenicScore) TreeIsVisible(int row, int col)
     {
         var above = TreeIsVisibleFromAndTreesVisibleToAbove(row, col);
         var below = TreeIsVisibleFromAndTreesVisibleToBelow(row, col);
@@ -41,51 +39,47 @@ public class Forest
         return (visible, above.treesVisible * below.treesVisible * right.treesVisible * left.treesVisible);
     }
 
-    public (bool isVisible, int treesVisible) TreeIsVisibleFromAndTreesVisibleToRight(int row, int col)
+    private (bool isVisible, int treesVisible) TreeIsVisibleFromAndTreesVisibleToRight(int row, int col)
     {
         var visible = 0;
-        for (int i = row + 1; i < Trees.Count; i++)
+        for (int i = row + 1; i < _trees.Count; i++)
         {
             visible++;
-            if (Trees[i][col] >= Trees[row][col]) return (false, visible);
+            if (_trees[i][col] >= _trees[row][col]) return (false, visible);
         }
         return (true, visible);
     }
-    
-    public (bool isVisible, int treesVisible) TreeIsVisibleFromAndTreesVisibleToLeft(int row, int col)
+
+    private (bool isVisible, int treesVisible) TreeIsVisibleFromAndTreesVisibleToLeft(int row, int col)
     {
     var visible = 0;
         for (int i = row - 1; i >= 0; i--)
         {
             visible++;
-            if (Trees[i][col] >= Trees[row][col]) return (false, visible);
+            if (_trees[i][col] >= _trees[row][col]) return (false, visible);
         }
         return (true,visible);
     }
-    
-    public (bool isVisible, int treesVisible) TreeIsVisibleFromAndTreesVisibleToAbove(int row, int col)
+
+    private (bool isVisible, int treesVisible) TreeIsVisibleFromAndTreesVisibleToAbove(int row, int col)
     {
     var visible = 0;
-        for (int i = col + 1; i < Trees.First().Count; i++)
+        for (int i = col + 1; i < _trees.First().Count; i++)
         {
             visible++;
-            if (Trees[row][i] >= Trees[row][col]) return (false, visible);
+            if (_trees[row][i] >= _trees[row][col]) return (false, visible);
         }
         return (true,visible);
     }
-    
-    public (bool isVisible, int treesVisible) TreeIsVisibleFromAndTreesVisibleToBelow(int row, int col)
+
+    private (bool isVisible, int treesVisible) TreeIsVisibleFromAndTreesVisibleToBelow(int row, int col)
     {
     var visible = 0;
         for (int i = col - 1; i >= 0; i--)
         {
             visible++;
-            if (Trees[row][i] >= Trees[row][col]) return (false, visible);
+            if (_trees[row][i] >= _trees[row][col]) return (false, visible);
         }
         return (true,visible);
     }
-    
-    
-    
-    
 }

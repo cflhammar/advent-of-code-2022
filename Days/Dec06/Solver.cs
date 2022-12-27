@@ -8,16 +8,16 @@ public class Solver : ISolver
     
     public void Solve()
     {
-        var testInput = ParseInput("test1");
+        var testInput = ParseInput("test1"); 
         var input = ParseInput("input");
+        
+        var sp = new SubPacket();
 
-      var sp = new SubPacket();
-
-      Console.WriteLine(sp.FindOccurence(testInput, 4));
-      Console.WriteLine(sp.FindOccurence(input, 4));
-      
-      Console.WriteLine(sp.FindOccurence(testInput, 14));
-      Console.WriteLine(sp.FindOccurence(input, 14));
+        Console.WriteLine("Part 1: Test: " + sp.FindOccurence(testInput, 4)); 
+        Console.WriteLine("Part 1: " + sp.FindOccurence(input, 4));
+        
+        Console.WriteLine("Part 2: Test: " + sp.FindOccurence(testInput, 14)); 
+        Console.WriteLine("Part 2: " + sp.FindOccurence(input, 14));
     }
 
     public dynamic ParseInput(string fileName)

@@ -14,16 +14,16 @@ public class Solver : ISolver
         var input = ParseInput("input");
 
         var rp = new RopePredictor(1);
-        Console.WriteLine(rp.MoveHead(testInput1) + " (13)");
+        Console.WriteLine(" Part 1: Test:" + rp.MoveHead(testInput1) + " (13)");
         
         rp = new RopePredictor(1);
-        Console.WriteLine(rp.MoveHead(input));
+        Console.WriteLine(" Part 1: " + rp.MoveHead(input));
         
         rp = new RopePredictor(9);
-        Console.WriteLine(rp.MoveHead(testInput2) + " (36)");
+        Console.WriteLine(" Part 2: Test:" + rp.MoveHead(testInput2) + " (36)");
         
         rp = new RopePredictor(9);
-        Console.WriteLine(rp.MoveHead(input));
+        Console.WriteLine(" Part 2: " + rp.MoveHead(input));
     }
 
     public dynamic ParseInput(string fileName)

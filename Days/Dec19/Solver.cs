@@ -1,6 +1,4 @@
-using System;
 using System.Text.RegularExpressions;
-using System.Windows.Markup;
 using aoc_2022.Helpers;
 
 namespace aoc_2022.Days.Dec19;
@@ -18,7 +16,7 @@ public class Solver : ISolver
         Console.WriteLine("Part 1: Test: " + f.FindBest(testInput, 24).Item1 + " -> 33");
         Console.WriteLine("Part 1: " + f.FindBest(input, 24).Item1);
         
-        // Console.WriteLine("Part 2: Test: " + f.FindBest(testInput, 32, 3).Item2 + " -> 62");
+        //Console.WriteLine("Part 2: Test: " + f.FindBest(testInput, 32, 3).Item2 + " -> 62");
         Console.WriteLine("Part 2: " + f.FindBest(input, 32, 3).Item2);
     }
 

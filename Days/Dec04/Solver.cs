@@ -14,10 +14,13 @@ public class Solver : ISolver
         var elfOverlap = new ElfPairOverlap();
 
         var testResult = elfOverlap.CalculateElfOverlap(testInput);
-   //     var result = elfOverlap.CalculateElfOverlap(input);
+        var result = elfOverlap.CalculateElfOverlap(input);
         
-        Console.WriteLine("Part 1: Test: " + testResult.Item1 + " (2)" + "\n" + "Part 2: Test: " + testResult.Item2 + " (4)");
-     //   Console.WriteLine("Part 1: " + result.Item1  + "\n" + "Part 2: " + result.Item2 );
+        Console.WriteLine("Part 1: Test: " + testResult.Item1 + " (2)" + "\n" + 
+                          "Part 2: Test: " + testResult.Item2 + " (4)");
+        
+        Console.WriteLine("Part 1: " + result.Item1  + "\n" + 
+                          "Part 2: " + result.Item2 );
     }
 
     public dynamic ParseInput(string fileName)

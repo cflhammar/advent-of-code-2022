@@ -30,7 +30,7 @@ public class DistressSignal
         return sum;
     }
 
-    public int ComparePackets(Packet left, Packet right)
+    private int ComparePackets(Packet left, Packet right)
     {
         // Both packets have a int value
         if (left.Value != null && right.Value != null)

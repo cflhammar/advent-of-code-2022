@@ -2,12 +2,12 @@ namespace aoc_2022.Days.Dec09;
 
 public class RopePredictor
 {
-    List<Coordinate> Knots = new();
-    Dictionary<string, int> visited = new ();
+    private List<Coordinate> _knots = new();
+    private Dictionary<string, int> _visited = new ();
 
     public RopePredictor(int knots)
     {
-        for (int i = 0; i <= knots; i++) Knots.Add(new Coordinate());
+        for (int i = 0; i <= knots; i++) _knots.Add(new Coordinate());
     }
     
     public int MoveHead(List<List<string>> input)
@@ -19,38 +19,38 @@ public class RopePredictor
                 switch (moveHead[0])
                 {
                     case "U":
-                        Knots[0].Y++;
+                        _knots[0].Y++;
                         break;
                     case "D":
-                        Knots[0].Y--;
+                        _knots[0].Y--;
                         break;
                     case "R":
-                        Knots[0].X++;
+                        _knots[0].X++;
                         break;
                     case "L":
-                        Knots[0].X--;
+                        _knots[0].X--;
                         break;
                 }
                 MoveAllKnots();
             }
         }
-        return visited.Count;
+        return _visited.Count;
     }
 
     public void MoveAllKnots()
     {
-        for (int i = 0; i < Knots.Count-1; i++)
+        for (int i = 0; i < _knots.Count-1; i++)
         {
-            var leader = Knots[i];
-            var follower = Knots[i + 1];
+            var leader = _knots[i];
+            var follower = _knots[i + 1];
 
-            Knots[i+1] = MoveKnot(leader, follower);
+            _knots[i+1] = MoveKnot(leader, follower);
 
-            if (i + 1 == Knots.Count-1)
+            if (i + 1 == _knots.Count-1)
             {
-                var pos = Knots.Last().X + "." + Knots.Last().Y;
-                if (visited.ContainsKey(pos)) visited[pos]++;
-                else visited.Add(pos,1);
+                var pos = _knots.Last().X + "." + _knots.Last().Y;
+                if (_visited.ContainsKey(pos)) _visited[pos]++;
+                else _visited.Add(pos,1);
             }
         }
     }
