@@ -6,9 +6,9 @@ public class Hill
 {
     private static List<(int, int)> _neighbours = new() {(-1,0), (1,0), (0, -1), (0,1)};
 
-    public int FindShortestPath(List<List<char>> map)
+    public int FindShortestPath(List<List<char>> map, bool reverse = false)
     {
-        map = FlipMap(map);
+         if (reverse) map = FlipMap(map);
         
         (int x, int y) start = new();
         foreach (var row in Enumerable.Range(0, map.Count))
@@ -18,9 +18,8 @@ public class Hill
                 if (map[row][col] == 'S') start = (row, col);
             }
         }
-        
-        
-        return BFSearch(map, start);
+
+        return BfSearch(map, start);
     }
     
     private List<List<char>> FlipMap(List<List<char>> map)
@@ -41,7 +40,7 @@ public class Hill
         return newMap;
     }
 
-    public int BFSearch(List<List<char>> map, (int,int) start)
+    public int BfSearch(List<List<char>> map, (int,int) start)
     {
         var visited = new HashSet<(int x, int y)>();
         var q = new Queue<((int x, int y), int dist)>();

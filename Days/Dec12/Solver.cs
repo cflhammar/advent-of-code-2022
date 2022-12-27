@@ -13,8 +13,13 @@ public class Solver : ISolver
         var input = ParseInput("input");
 
         var m = new Hill();
-        Console.WriteLine( m.FindShortestPath(testInput));
-        Console.WriteLine( m.FindShortestPath(input));
+        
+        Console.WriteLine("Part 1: Test: + " + m.FindShortestPath(testInput) + " ->  31" );
+        Console.WriteLine("Part 1 + " + m.FindShortestPath(input));
+        
+        Console.WriteLine("Part 2: Test: + " + m.FindShortestPath(testInput, true) + " ->  29" );
+        Console.WriteLine("Part 2 + " + m.FindShortestPath(input, true));
+        
         
  
     }

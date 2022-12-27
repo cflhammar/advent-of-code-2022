@@ -13,8 +13,8 @@ public class Solver : ISolver
 
         var sc = new SnafuConverter();
         
-        Console.WriteLine(sc.DecimalToSnafuByIteration(sc.SumSnafuNumbers(testInput)) + "  ->  2=-1=0" );
-        Console.WriteLine(sc.DecimalToSnafuByIteration(sc.SumSnafuNumbers(input)));
+        Console.WriteLine("Part 1: Test: " + sc.DecimalToSnafuByIteration(sc.SumSnafuNumbers(testInput)) + "  ->  2=-1=0" );
+        Console.WriteLine("Part 1: " + sc.DecimalToSnafuByIteration(sc.SumSnafuNumbers(input)));
     }
 
     public dynamic ParseInput(string fileName)
